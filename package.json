@@ -1,0 +1,27 @@
+{
+  "name": "presto",
+  "version": "0.0.1",
+  "description": "Allegro bindings for node",
+  "main": "./index",
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
+  },
+  "devDependencies": {
+    "tape": "~0.2.2"
+  },
+  "keywords": [
+    "allegro",
+    "game",
+    "binding"
+  ],
+  "gypfile": true,
+  "author": "Jason Frame <jason@onehackoranother.com> (jasonframe.co.uk)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaz303/presto.git"
+  },
+  "dependencies": {
+    "bindings": "~1.1.1"
+  }
+}
