@@ -8,51 +8,56 @@
 using namespace v8;
 
 static Persistent<Function> s_entryPoint;
+static Persistent<Context>  s_context;
 
 static int our_main(int argc, char **argv) {
 
-    Isolate *isolate = Isolate::GetCurrent();
-
     {
-        Locker locker(isolate);
-        isolate->Enter();
+        Locker locker(Isolate::GetCurrent());
+        Isolate::Scope scope(Isolate::GetCurrent());
+
+        s_context->Enter();
+        
+        al_init();
 
         HandleScope _;
-
-        al_init();
+        Handle<String> source = String::New("'Hello' + ', World'");
+        Handle<Script> script = Script::Compile(source);
+        Handle<Value> result = script->Run();
+        String::AsciiValue ascii(result);
+        printf("%s\n", *ascii);
 
         s_entryPoint->Call(Context::GetCurrent()->Global(), 0, NULL);
 
-        isolate->Exit();
+        s_context->Exit();
     }
 
-    return 1;
+    return 0;
 
 }
 
 Handle<Value> run(const Arguments& args) {
 
-    HandleScope _;
-
-    if (!args[0]->IsFunction()) {
+    if (args.Length() == 0 || !args[0]->IsFunction()) {
         std::cerr << "error: presto.run() requires a function as its first argument" << std::endl;
-        return _.Close(Undefined());
+        return HandleScope().Close(Undefined());
     }
 
-    Isolate *isolate = Isolate::GetCurrent();
+    s_entryPoint = Persistent<Function>(Handle<Function>::Cast(args[0]));
+    s_context = Persistent<Context>(Context::GetCurrent());
+    s_context->Exit();
 
     {
-        isolate->Exit();
-        Unlocker unlocker(isolate);
-
-        s_entryPoint = Persistent<Function>(Handle<Function>::Cast(args[0]));
+        Unlocker unlocker(Isolate::GetCurrent());
         al_run_main(0, NULL, our_main);
-        s_entryPoint.Dispose();
     }
 
-    isolate->Enter();
+    s_context->Enter();
 
-    return _.Close(Undefined());
+    s_context.Dispose();
+    s_entryPoint.Dispose();
+
+    return HandleScope().Close(Undefined());
 
 }
 
