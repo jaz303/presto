@@ -6,7 +6,8 @@
       "sources": [
         "src/entry.cpp",
         "src/init.cpp",
-        "src/display.cpp"
+        "src/display.cpp",
+        "src/event_queue.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {

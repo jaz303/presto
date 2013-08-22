@@ -5,6 +5,8 @@
 
 using namespace v8;
 
+#include "event_queue.h"
+
 Handle<Value> ps_install(const Arguments& args);
 Handle<Value> ps_uninstall(const Arguments &args);
 Handle<Value> ps_install_joystick(const Arguments& args);
