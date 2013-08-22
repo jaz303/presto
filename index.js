@@ -103,4 +103,9 @@ function createDisplay(width, height, opts) {
 }
 
 exports.main = main;
-exports.createDisplay = createDisplay;
+
+//
+// Display
+
+exports.createDisplay       = createDisplay;
+exports.inhibitScreensaver  = bindings.ps_inhibit_screensaver;
