@@ -80,6 +80,8 @@ void init(Handle<Object> target) {
     EXPOSE_SUBYSTEM(image);
     EXPOSE_SUBYSTEM(primitives);
 
+    NODE_SET_METHOD(target, "ps_create_display", ps_create_display);
+
 }
 
 NODE_MODULE(presto_bindings, init);

@@ -98,6 +98,7 @@ function main() {
 }
 
 function createDisplay(width, height, opts) {
+    bindings.ps_create_display();
     // TODO: call function on binding
 }
 

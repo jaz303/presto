@@ -22,4 +22,6 @@ Handle<Value> ps_uninstall_image(const Arguments &args);
 Handle<Value> ps_install_primitives(const Arguments& args);
 Handle<Value> ps_uninstall_primitives(const Arguments &args);
 
+Handle<Value> ps_create_display(const Arguments &args);
+
 #endif
