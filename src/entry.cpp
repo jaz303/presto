@@ -4,8 +4,7 @@
 
 #include <allegro5/allegro.h>
 
-#include "init.h"
-#include "display.h"
+#include "api.h"
 
 using namespace v8;
 
