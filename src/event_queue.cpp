@@ -41,6 +41,30 @@ Handle<Value> PSEventQueue::InstallJoystickEventSource(const Arguments& args)
     return _.Close(Undefined());
 }
 
+Handle<Value> PSEventQueue::UninstallMouseEventSource(const Arguments& args)
+{
+    HandleScope _;
+    UNWRAP_SELF;
+    al_unregister_event_source(self->queue_, al_get_mouse_event_source());
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSEventQueue::UninstallKeyboardEventSource(const Arguments& args)
+{
+    HandleScope _;
+    UNWRAP_SELF;
+    al_unregister_event_source(self->queue_, al_get_keyboard_event_source());
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSEventQueue::UninstallJoystickEventSource(const Arguments& args)
+{
+    HandleScope _;
+    UNWRAP_SELF;
+    al_unregister_event_source(self->queue_, al_get_joystick_event_source());
+    return _.Close(Undefined());
+}
+
 Handle<Value> PSEventQueue::IsEmpty(const Arguments& args)
 {
     HandleScope _;

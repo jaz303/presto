@@ -23,6 +23,9 @@ public:
     static Handle<Value> InstallMouseEventSource(const Arguments& args);
     static Handle<Value> InstallKeyboardEventSource(const Arguments& args);
     static Handle<Value> InstallJoystickEventSource(const Arguments& args);
+    static Handle<Value> UninstallMouseEventSource(const Arguments& args);
+    static Handle<Value> UninstallKeyboardEventSource(const Arguments& args);
+    static Handle<Value> UninstallJoystickEventSource(const Arguments& args);
 
     static Handle<Value> IsEmpty(const Arguments& args);
     static Handle<Value> GetNextEvent(const Arguments& args);
