@@ -19,6 +19,7 @@ presto.main('keyboard', 'mouse', 'audio', function(game) {
     // Every internal tick performs the following:
     // 1. drains the main event queue, dispatching events to any registered handlers
     // 2. emits the 'tick' event
+    // The game loop will continue to run until `game.exit()` is called.
     game.run(60);
 
 });

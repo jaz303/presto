@@ -5,6 +5,8 @@
       "include_dirs": ["src"],
       "sources": [
         "src/entry.cpp",
+        "src/init.cpp",
+        "src/display.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {
@@ -16,7 +18,6 @@
             },
             'link_settings': {
               'libraries': [
-                '-lpthread',
                 '-lallegro',
                 '-lallegro_image',
                 '-lallegro_font',
