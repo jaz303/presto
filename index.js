@@ -44,18 +44,32 @@ function uninstallSubSystems(systems) {
 
 function newContext() {
 
+    var tickFn = function(delta) { console.log("no-op"); };
+    var running = false;
+
     // TODO: create event queue
 
     return {
+        exit: function() {
+            running = false;
+        },
         
         on: function(event, handler) {
-
+            if (event === 'tick') {
+                tickFn = handler;
+            }
         },
 
-        run: function() {
-
+        run: function(fps) {
+            running = true;
+            var timer = setInterval(function() {
+                if (!running) {
+                    clearInterval(timer);
+                } else {
+                    tickFn(1000 / fps);    
+                }
+            }, 1000 / fps);
         }
-    
     };
 
 }

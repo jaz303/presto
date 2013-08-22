@@ -1,6 +1,7 @@
 #include <v8.h>
 #include <node.h>
 #include <iostream>
+#include "uv.h"
 
 #include <allegro5/allegro.h>
 
@@ -11,7 +12,7 @@ using namespace v8;
 static Persistent<Function> s_entryPoint;
 static Persistent<Context>  s_context;
 
-static int our_main(int argc, char **argv) {
+static int presto_main(int argc, char **argv) {
 
     {
         Locker locker(Isolate::GetCurrent());
@@ -19,7 +20,10 @@ static int our_main(int argc, char **argv) {
 
         s_context->Enter();
         HandleScope _;
+        
         s_entryPoint->Call(s_context->Global(), 0, NULL);
+        uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+
         s_context->Exit();
     }
 
@@ -40,7 +44,7 @@ Handle<Value> run(const Arguments& args) {
 
     {
         Unlocker unlocker(Isolate::GetCurrent());
-        al_run_main(0, NULL, our_main);
+        al_run_main(0, NULL, presto_main);
     }
 
     s_context->Enter();

@@ -6,11 +6,17 @@ presto.main('keyboard', 'mouse', 'audio', function(game) {
 
     var display = presto.createDisplay(800, 600, {fullScreen: false});
 
+    var frames = 0;
+
     game.on('keydown', function() {
         game.exit();
     });
 
     game.on('tick', function(delta) {
+        console.log("tickin'", delta);
+        if (++frames == 200) {
+            game.exit();
+        }
         // display.use();
         // display.clear('black');
     });
