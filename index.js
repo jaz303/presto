@@ -88,8 +88,8 @@ function main() {
         subSystems  = makeSubSystemMap(args);
 
     bindings.run(function() {
-        installSubSystems(subSystems);    
         try {
+            installSubSystems(subSystems);
             fn(newContext());
         } finally {
             uninstallSubSystems(subSystems);    
