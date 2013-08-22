@@ -18,18 +18,8 @@ static int our_main(int argc, char **argv) {
         Isolate::Scope scope(Isolate::GetCurrent());
 
         s_context->Enter();
-        
-        al_init();
-
         HandleScope _;
-        // Handle<String> source = String::New("'Hello' + ', World'");
-        // Handle<Script> script = Script::Compile(source);
-        // Handle<Value> result = script->Run();
-        // String::AsciiValue ascii(result);
-        // printf("%s\n", *ascii);
-
         s_entryPoint->Call(s_context->Global(), 0, NULL);
-
         s_context->Exit();
     }
 
