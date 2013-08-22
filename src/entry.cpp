@@ -21,13 +21,13 @@ static int our_main(int argc, char **argv) {
         al_init();
 
         HandleScope _;
-        Handle<String> source = String::New("'Hello' + ', World'");
-        Handle<Script> script = Script::Compile(source);
-        Handle<Value> result = script->Run();
-        String::AsciiValue ascii(result);
-        printf("%s\n", *ascii);
+        // Handle<String> source = String::New("'Hello' + ', World'");
+        // Handle<Script> script = Script::Compile(source);
+        // Handle<Value> result = script->Run();
+        // String::AsciiValue ascii(result);
+        // printf("%s\n", *ascii);
 
-        s_entryPoint->Call(Context::GetCurrent()->Global(), 0, NULL);
+        s_entryPoint->Call(s_context->Global(), 0, NULL);
 
         s_context->Exit();
     }
@@ -39,7 +39,7 @@ static int our_main(int argc, char **argv) {
 Handle<Value> run(const Arguments& args) {
 
     if (args.Length() == 0 || !args[0]->IsFunction()) {
-        std::cerr << "error: presto.run() requires a function as its first argument" << std::endl;
+        std::cerr << "error: presto.bindings.run() requires a function as its first argument" << std::endl;
         return HandleScope().Close(Undefined());
     }
 
@@ -53,7 +53,6 @@ Handle<Value> run(const Arguments& args) {
     }
 
     s_context->Enter();
-
     s_context.Dispose();
     s_entryPoint.Dispose();
 
