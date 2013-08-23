@@ -4,6 +4,10 @@
 
 This is completely unfinished and in flux. It is, however, somewhat functional.
 
+## Project Aims
+
+To provide a simple and idiomatic interface to the Allegro game-programming library.
+
 ## Installation
 
   * Install Allegro 5
