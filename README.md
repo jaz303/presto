@@ -2,12 +2,14 @@
 
 [Allegro 5](http://alleg.sourceforge.net/) bindings for node.
 
-This is completely unfinished.
+This is completely unfinished and in flux. It is, however, somewhat functional.
 
 ## Installation
 
   * Install Allegro 5
-  * `npm install presto`
+  * <del>`npm install presto`</del>
+
+As it turns out we need a patched version of node because Allegro requires thread-hoisting gymnastics and `uv_run()` is not officially re-entrant. I'm not saying it's unsolvable with vanilla node but I'd already spent way too long on it when the working solution is "good enough". I'll create an official patched version of node later, and probably build the presto extensions into it directly. From there I'll create a binary `.app` distribution similar to Lua's Love engine.
 
 ## Example
 
@@ -15,32 +17,30 @@ This is what it will look like:
 
     var presto = require('presto');
 
-    // Initialise the specified Allegro subsystems then run the callback
-    // on Allegro's thread.
-    presto.main('keyboard', 'mouse', 'audio', function(game) {
+    presto.init();
 
-        var display = presto.createDisplay(800, 600, {fullScreen: false});
+    var game = presto.createContext();
 
-        var frames = 0;
+    var display = presto.createDisplay(800, 600, {fullScreen: false});
 
-        game.on('keydown', function() {
-            game.exit();
-        });
+    var frames = 0;
 
-        game.on('tick', function(delta) {
-            console.log("tickin'", delta);
-            if (++frames == 200) {
-                game.exit();
-            }
-            // display.use();
-            // display.clear('black');
-        });
-
-        // Sets internal tick function to run at specified FPS
-        // Every internal tick performs the following:
-        // 1. drains the main event queue, dispatching events to any registered handlers
-        // 2. emits the 'tick' event
-        // The game loop will continue to run until `game.exit()` is called.
-        game.run(60);
-
+    game.on('keydown', function() {
+        game.exit();
     });
+
+    game.on('tick', function(delta) {
+        console.log("tickin'", delta);
+        if (++frames == 200) {
+            game.exit();
+        }
+        // display.use();
+        // display.clear('black');
+    });
+
+    // Sets internal tick function to run at specified FPS
+    // Every internal tick performs the following:
+    // 1. drains the main event queue, dispatching events to any registered handlers
+    // 2. emits the 'tick' event
+    // The game loop will continue to run until `game.exit()` is called.
+    game.run(60);

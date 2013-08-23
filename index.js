@@ -42,45 +42,56 @@ function uninstallSubSystems(systems) {
 
 }
 
-function newContext() {
+function createContext() {
 
-    var tickFn = function(delta) { console.log("no-op"); };
+    var queue = bindings.createEventQueue();
+    var tickFn = function(delta) {};
     var running = false;
 
-    // TODO: create event queue
+    queue.installMouseEventSource();
+    queue.installKeyboardEventSource();
 
-    return {
-        exit: function() {
-            running = false;
-        },
-        
-        on: function(event, handler) {
-            if (event === 'tick') {
-                tickFn = handler;
-            }
-        },
-
-        run: function(fps) {
-            running = true;
-            var timer = setInterval(function() {
-                if (!running) {
-                    clearInterval(timer);
-                } else {
-                    tickFn(1000 / fps);    
-                }
-            }, 1000 / fps);
+    function tick(delta) {
+        var evt = queue.getNextEvent();
+        while (evt !== null) {
+            console.log(evt);
+            evt = queue.getNextEvent();
         }
-    };
+        if (running) {
+            tickFn(delta);    
+        }
+    }
+
+    var game = {queue: queue};
+
+    game.exit = function() {
+        running = false;
+    }
+
+    game.on = function(event, handler) {
+        if (event === 'tick') {
+            tickFn = handler;
+        }
+    }
+
+    game.run = function(fps) {
+        running = true;
+        var timer = setInterval(function() {
+            if (!running) {
+                clearInterval(timer);
+            } else {
+                tick(1000 / fps);    
+            }
+        }, 1000 / fps);
+    }
+
+    return game;
 
 }
 
-function main() {
+function init() {
 
     var args = Array.prototype.slice.call(arguments, 0);
-
-    if (args.length === 0 || typeof args[args.length-1] !== 'function') {
-        throw "presto.main() requires a callback as its last argument";
-    }
 
     function makeSubSystemMap(list) {
         var map = {},
@@ -98,28 +109,26 @@ function main() {
         return map;
     }
 
-    var fn          = args.pop(),
-        subSystems  = makeSubSystemMap(args);
+    var subSystems = makeSubSystemMap(args);
 
-    bindings.run(function() {
-        try {
-            installSubSystems(subSystems);
-            fn(newContext());
-        } finally {
-            uninstallSubSystems(subSystems);    
-        }
-    });
+    installSubSystems(subSystems);
+    
 }
 
 function createDisplay(width, height, opts) {
     bindings.ps_create_display();
-    // TODO: call function on binding
 }
 
-exports.main = main;
+exports.init                = init;
+exports.createContext       = createContext;
 
 //
 // Display
 
 exports.createDisplay       = createDisplay;
 exports.inhibitScreensaver  = bindings.ps_inhibit_screensaver;
+
+//
+// Events
+
+exports.createEventQueue    = bindings.createEventQueue;

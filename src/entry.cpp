@@ -20,7 +20,7 @@ static int presto_main(int argc, char **argv) {
 
         s_context->Enter();
         HandleScope _;
-        
+
         s_entryPoint->Call(s_context->Global(), 0, NULL);
         uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 
@@ -34,7 +34,7 @@ static int presto_main(int argc, char **argv) {
 Handle<Value> run(const Arguments& args) {
 
     if (args.Length() == 0 || !args[0]->IsFunction()) {
-        std::cerr << "error: presto.bindings.run() requires a function as its first argument" << std::endl;
+        std::cerr << "error: presto_bindings.run() requires a function as its first argument" << std::endl;
         return HandleScope().Close(Undefined());
     }
 
@@ -61,6 +61,8 @@ Handle<Value> run(const Arguments& args) {
 
 void init(Handle<Object> target) {
 
+    PSEventQueue::init(target);
+
     NODE_SET_METHOD(target, "run", run);
 
     NODE_SET_METHOD(target, "ps_install", ps_install);
@@ -76,6 +78,8 @@ void init(Handle<Object> target) {
 
     NODE_SET_METHOD(target, "ps_create_display", ps_create_display);
     NODE_SET_METHOD(target, "ps_inhibit_screensaver", ps_inhibit_screensaver);
+
+    NODE_SET_METHOD(target, "createEventQueue", createEventQueue);
 
 }
 

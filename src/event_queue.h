@@ -7,6 +7,8 @@
 
 using namespace v8;
 
+Handle<Value> createEventQueue(const Arguments& args);
+
 class PSEventQueue : node::ObjectWrap {
 public:
     PSEventQueue();
@@ -15,14 +17,19 @@ public:
 private:
     ALLEGRO_EVENT_QUEUE *queue_;
 
+    PSEventQueue(const PSEventQueue&);
+    void operator=(const PSEventQueue&);
+
 public:
     static Persistent<FunctionTemplate> tpl;
     static void init(Handle<Object> target);
-    static Handle<Value> create_instance();
-
+    static Handle<Value> createInstance();
+    
+    static Handle<Value> InstallDisplayEventSource(const Arguments& args);
     static Handle<Value> InstallMouseEventSource(const Arguments& args);
     static Handle<Value> InstallKeyboardEventSource(const Arguments& args);
     static Handle<Value> InstallJoystickEventSource(const Arguments& args);
+    static Handle<Value> UninstallDisplayEventSource(const Arguments& args);
     static Handle<Value> UninstallMouseEventSource(const Arguments& args);
     static Handle<Value> UninstallKeyboardEventSource(const Arguments& args);
     static Handle<Value> UninstallJoystickEventSource(const Arguments& args);
