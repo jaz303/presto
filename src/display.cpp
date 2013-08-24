@@ -36,7 +36,7 @@ PSDisplay::PSDisplay(ALLEGRO_DISPLAY *display)
 
 PSDisplay::~PSDisplay()
 {
-    al_destroy_display(display_);
+    destroy();
 }
 
 void PSDisplay::init(Handle<Object> target)
@@ -76,6 +76,8 @@ void PSDisplay::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "acknowledgeResize", AcknowledgeResize);
     NODE_SET_PROTOTYPE_METHOD(ft, "flip", Flip);
     NODE_SET_PROTOTYPE_METHOD(ft, "resize", Resize);
+    NODE_SET_PROTOTYPE_METHOD(ft, "destroy", Destroy);
+
 
     PSDisplay::tpl = Persistent<FunctionTemplate>::New(ft);
 }
@@ -246,4 +248,19 @@ Handle<Value> PSDisplay::Resize(const Arguments& args)
 
     UNWRAP_SELF;
     return _.Close(al_resize_display(self->display_, width, height) ? True() : False());
+}
+
+Handle<Value> PSDisplay::Destroy(const Arguments& args)
+{
+    UNWRAP_SELF;
+    self->destroy();
+    return HandleScope().Close(Undefined());
+}
+
+void PSDisplay::destroy()
+{
+    if (display_ != NULL) {
+        al_destroy_display(display_);
+        display_ = NULL;
+    }
 }

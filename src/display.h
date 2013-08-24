@@ -37,12 +37,15 @@ public:
     static Handle<Value> AcknowledgeResize(const Arguments &args);
     static Handle<Value> Flip(const Arguments& args);
     static Handle<Value> Resize(const Arguments& args);
+    static Handle<Value> Destroy(const Arguments& args);
 
 private:
     ALLEGRO_DISPLAY *display_;
 
     PSDisplay(const PSDisplay&);
     void operator=(const PSDisplay&);
+
+    void destroy();
 };
 
 #endif
