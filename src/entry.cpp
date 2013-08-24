@@ -1,3 +1,8 @@
+// This file was the original entry point when presto was run under
+// an unpatched version of node. It's now unused but I've left it
+// in the tree in case someone more knowledgeable about v8/node/libuv
+// internals knows how it could be adapted to work.
+
 #include <v8.h>
 #include <node.h>
 #include <iostream>
