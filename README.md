@@ -48,3 +48,27 @@ This is what it will look like:
     // 2. emits the 'tick' event
     // The game loop will continue to run until `game.exit()` is called.
     game.run(60);
+
+## Limitations
+
+Presto does not, and probably will never, support the following Allegro features:
+
+  * Timers
+  * User events
+  * Configuration files
+  * Time
+  * UTF-8
+  * Filesystem
+  * File IO
+  * Memory
+  * Path
+  * Direct3D
+
+Most of the above are well addressed by existing npm modules - use these instead!
+
+The following features are not currently supported, but may be added in the future. Patches gladly accepted!
+
+  * OpenGL
+  * Fixed point math
+  * Monitors
+  * Threads (with some suitable abstraction)
