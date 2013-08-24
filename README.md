@@ -19,9 +19,7 @@ As it turns out we need a patched version of node because Allegro requires threa
 
 This is what it will look like:
 
-    var presto = require('presto');
-
-    presto.init();
+    var presto = require('presto').init();
 
     var game = presto.createContext();
 
