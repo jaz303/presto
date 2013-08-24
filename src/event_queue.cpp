@@ -1,7 +1,5 @@
 #include "event_queue.h"
 
-#include <iostream>
-
 #define UNWRAP_SELF \
     PSEventQueue *self = node::ObjectWrap::Unwrap<PSEventQueue>(args.This()); \
     (void)self
@@ -33,8 +31,6 @@ DECLARE_EV_KEY(keycode);
 DECLARE_EV_KEY(unichar);
 DECLARE_EV_KEY(repeat);
 DECLARE_EV_KEY(modifiers);
-
-int ecount = 0;
 
 Handle<Value> createEventQueue(const Arguments& args)
 {
@@ -186,13 +182,8 @@ Handle<Value> PSEventQueue::GetNextEvent(const Arguments& args)
     HandleScope _;
     UNWRAP_SELF;
 
-    std::cout << "getting event..." << std::endl;
-
     ALLEGRO_EVENT evt;
     if (al_get_next_event(self->queue_, &evt)) {
-
-    std::cout << "evt! " << (++ecount) << " type: " << evt.type << std::endl;
-
         return _.Close(wrapEvent(&evt));
     } else {
         return _.Close(Null());
