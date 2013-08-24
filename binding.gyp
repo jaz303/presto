@@ -4,10 +4,10 @@
       "target_name": "presto_bindings",
       "include_dirs": ["src"],
       "sources": [
-        "src/entry.cpp",
         "src/init.cpp",
         "src/display.cpp",
-        "src/event_queue.cpp"
+        "src/event_queue.cpp",
+        "src/presto.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {

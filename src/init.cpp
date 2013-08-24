@@ -6,8 +6,6 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
-#include <iostream>
-
 using namespace v8;
 
 #define BOOL(exp) (HandleScope().Close((exp) ? True() : False()));

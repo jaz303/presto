@@ -116,7 +116,7 @@ function init() {
 }
 
 function createDisplay(width, height, opts) {
-    bindings.ps_create_display();
+    bindings.createDisplay();
 }
 
 exports.init                = init;
@@ -126,7 +126,7 @@ exports.createContext       = createContext;
 // Display
 
 exports.createDisplay       = createDisplay;
-exports.inhibitScreensaver  = bindings.ps_inhibit_screensaver;
+exports.inhibitScreensaver  = bindings.inhibitScreensaver;
 
 //
 // Events

@@ -24,7 +24,7 @@ Handle<Value> ps_uninstall_image(const Arguments &args);
 Handle<Value> ps_install_primitives(const Arguments& args);
 Handle<Value> ps_uninstall_primitives(const Arguments &args);
 
-Handle<Value> ps_create_display(const Arguments &args);
-Handle<Value> ps_inhibit_screensaver(const Arguments &args);
+Handle<Value> createDisplay(const Arguments &args);
+Handle<Value> inhibitScreensaver(const Arguments &args);
 
 #endif
