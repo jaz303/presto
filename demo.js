@@ -9,6 +9,7 @@ var fs = require('fs');
 var display = presto.createDisplay(800, 600, {fullScreen: false});
 display.resize(400, 400);
 display.setPosition(0, 0);
+display.setTitle("AND MY AXE");
 
 var frames = 0;
 
@@ -17,8 +18,6 @@ game.on('keydown', function() {
 });
 
 game.on('tick', function(delta) {
-
-    display.x;
 
     //console.log(display.x);
     
