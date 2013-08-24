@@ -31,6 +31,10 @@ DECLARE_EV_KEY(keycode);
 DECLARE_EV_KEY(unichar);
 DECLARE_EV_KEY(repeat);
 DECLARE_EV_KEY(modifiers);
+DECLARE_EV_KEY(metaKey);
+DECLARE_EV_KEY(shiftKey);
+DECLARE_EV_KEY(controlKey);
+DECLARE_EV_KEY(altKey);
 
 Handle<Value> createEventQueue(const Arguments& args)
 {
@@ -93,6 +97,10 @@ void PSEventQueue::init(Handle<Object> target)
     INIT_EV_KEY(unichar, "unichar");
     INIT_EV_KEY(repeat, "repeat");
     INIT_EV_KEY(modifiers, "modifiers");
+    INIT_EV_KEY(metaKey, "metaKey");
+    INIT_EV_KEY(shiftKey, "shiftKey");
+    INIT_EV_KEY(controlKey, "controlKey");
+    INIT_EV_KEY(altKey, "altKey");
 }
 
 Handle<Value> PSEventQueue::createInstance()
@@ -275,6 +283,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
     HandleScope _;
 
     Handle<Object> eo = Object::New();
+    int m;
 
     eo->Set(String::New("type"), Integer::NewFromUnsigned(evt->type));
 
@@ -302,7 +311,13 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_INT(unichar, evt->keyboard.unichar);
             // TODO: decode character to string
             EV_SET_INT(modifiers, evt->keyboard.modifiers);
-            // TODO: decode modifiers
+
+            m = evt->keyboard.modifiers;            
+            EV_SET_BOOL(altKey, m & ALLEGRO_KEYMOD_ALT);
+            EV_SET_BOOL(shiftKey, m & ALLEGRO_KEYMOD_SHIFT);
+            EV_SET_BOOL(controlKey, m & ALLEGRO_KEYMOD_CTRL);
+            EV_SET_BOOL(metaKey, m & ALLEGRO_KEYMOD_COMMAND);
+
             EV_SET_INT(repeat, evt->keyboard.repeat);
             // TODO: display
             break;
