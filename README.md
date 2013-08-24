@@ -47,6 +47,25 @@ This is what it will look like:
     // The game loop will continue to run until `game.exit()` is called.
     game.run(60);
 
+## TODO
+
+  * <del>Initialise Allegro</del>
+  * <del>Integrate Allegro event loop with libuv</del>
+  * <del>Event queues</del>
+  * <del>System</del>
+  * <del>Display</del>
+  * Colors
+  * Graphics
+  * Image I/O
+  * Primitives
+  * Fonts
+  * Mouse
+  * Joystick
+  * Keyboard
+  * OpenGL
+  * Audio
+  * Native dialogs
+
 ## Cut Corners
 
 I've skipped implementing some tedious stuff that's not immediately useful to me:
