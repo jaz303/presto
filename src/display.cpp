@@ -11,7 +11,7 @@
 
 using namespace v8;
 
-#define MAX_DISPLAYS 16
+static const int MAX_DISPLAYS = 16;
 struct {
     bool inUse;
     ALLEGRO_DISPLAY *alDisplay;
