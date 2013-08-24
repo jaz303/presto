@@ -113,6 +113,8 @@ function init() {
     var subSystems = makeSubSystemMap(args);
 
     installSubSystems(subSystems);
+
+    return exports;
     
 }
 

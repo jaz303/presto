@@ -1,6 +1,4 @@
-var presto = require('./');
-
-presto.init();
+var presto = require('./').init();
 
 var game = presto.createContext();
 
