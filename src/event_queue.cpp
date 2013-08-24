@@ -9,7 +9,30 @@
 #define THROW(message) \
     return ThrowException(Exception::Error(String::New(message)))
 
+#define DECLARE_EV_KEY(name)        static Persistent<String> ev_key_##name
+#define INIT_EV_KEY(name, value)    ev_key_##name = Persistent<String>::New(String::New(value));
+
 Persistent<FunctionTemplate> PSEventQueue::tpl;
+
+DECLARE_EV_KEY(x);
+DECLARE_EV_KEY(y);
+DECLARE_EV_KEY(z);
+DECLARE_EV_KEY(w);
+DECLARE_EV_KEY(dx);
+DECLARE_EV_KEY(dy);
+DECLARE_EV_KEY(dz);
+DECLARE_EV_KEY(dw);
+DECLARE_EV_KEY(width);
+DECLARE_EV_KEY(height);
+DECLARE_EV_KEY(button);
+DECLARE_EV_KEY(stick);
+DECLARE_EV_KEY(axis);
+DECLARE_EV_KEY(pos);
+DECLARE_EV_KEY(orientation);
+DECLARE_EV_KEY(keycode);
+DECLARE_EV_KEY(unichar);
+DECLARE_EV_KEY(repeat);
+DECLARE_EV_KEY(modifiers);
 
 int ecount = 0;
 
@@ -54,6 +77,26 @@ void PSEventQueue::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "waitForEventUntil", WaitForEventUntil);
 
     PSEventQueue::tpl = Persistent<FunctionTemplate>::New(ft);
+
+    INIT_EV_KEY(x, "x");
+    INIT_EV_KEY(y, "y");
+    INIT_EV_KEY(z, "z");
+    INIT_EV_KEY(w, "w");
+    INIT_EV_KEY(dx, "dx");
+    INIT_EV_KEY(dy, "dy");
+    INIT_EV_KEY(dz, "dz");
+    INIT_EV_KEY(dw, "dw");
+    INIT_EV_KEY(width, "width");
+    INIT_EV_KEY(height, "height");
+    INIT_EV_KEY(button, "button");
+    INIT_EV_KEY(stick, "stick");
+    INIT_EV_KEY(axis, "axis");
+    INIT_EV_KEY(pos, "pos");
+    INIT_EV_KEY(orientation, "orientation");
+    INIT_EV_KEY(keycode, "keycode");
+    INIT_EV_KEY(unichar, "unichar");
+    INIT_EV_KEY(repeat, "repeat");
+    INIT_EV_KEY(modifiers, "modifiers");
 }
 
 Handle<Value> PSEventQueue::createInstance()
@@ -231,10 +274,10 @@ Handle<Value> PSEventQueue::WaitForEventUntil(const Arguments& args)
     }
 }
 
-#define EV_SET_INT(k, v)    eo->Set(String::New(#k), Integer::New(v))
-#define EV_SET_UINT(k, v)   eo->Set(String::New(#k), Integer::NewFromUnsigned(v))
-#define EV_SET_FLOAT(k, v)  eo->Set(String::New(#k), Number::New(v))
-#define EV_SET_BOOL(k, v)   eo->Set(String::New(#k), v ? True() : False())
+#define EV_SET_INT(k, v)    eo->Set(ev_key_##k, Integer::New(v))
+#define EV_SET_UINT(k, v)   eo->Set(ev_key_##k, Integer::NewFromUnsigned(v))
+#define EV_SET_FLOAT(k, v)  eo->Set(ev_key_##k, Number::New(v))
+#define EV_SET_BOOL(k, v)   eo->Set(ev_key_##k, v ? True() : False())
 
 Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
 {
