@@ -120,7 +120,23 @@ Handle<Value> PSEventQueue::createInstance()
 Handle<Value> PSEventQueue::InstallDisplayEventSource(const Arguments& args)
 {
     HandleScope _;
+    
+    if (args.Length() == 0) {
+        THROW("PSEventQueue.installDisplayEventSource() requires display argument");
+    }
+
+    if (!args[0]->IsObject()) {
+        THROW("PSEventQueue.installDisplayEventSource() argument must be object");   
+    }
+
+    PSDisplay *display = node::ObjectWrap::Unwrap<PSDisplay>(Handle<Object>::Cast(args[0]));
+    if (display == NULL) {
+        THROW("PSEventQueue.installDisplayEventSource() argument must be PSDisplay instance");
+    }
+
     UNWRAP_SELF;
+    al_register_event_source(self->queue_, al_get_display_event_source(display->allegroDisplay()));
+
     return _.Close(Undefined());
 }
 
@@ -151,7 +167,23 @@ Handle<Value> PSEventQueue::InstallJoystickEventSource(const Arguments& args)
 Handle<Value> PSEventQueue::UninstallDisplayEventSource(const Arguments& args)
 {
     HandleScope _;
+    
+    if (args.Length() == 0) {
+        THROW("PSEventQueue.uninstallDisplayEventSource() requires display argument");
+    }
+
+    if (!args[0]->IsObject()) {
+        THROW("PSEventQueue.uninstallDisplayEventSource() argument must be object");   
+    }
+
+    PSDisplay *display = node::ObjectWrap::Unwrap<PSDisplay>(Handle<Object>::Cast(args[0]));
+    if (display == NULL) {
+        THROW("PSEventQueue.uninstallDisplayEventSource() argument must be PSDisplay instance");
+    }
+
     UNWRAP_SELF;
+    al_unregister_event_source(self->queue_, al_get_display_event_source(display->allegroDisplay()));
+
     return _.Close(Undefined());
 }
 
