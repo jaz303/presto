@@ -1,6 +1,7 @@
 #include "event_queue.h"
 
 #include "helpers.h"
+#include "display.h"
 
 #define UNWRAP_SELF \
     PSEventQueue *self = node::ObjectWrap::Unwrap<PSEventQueue>(args.This()); \
@@ -34,6 +35,7 @@ DECLARE_EV_KEY(metaKey);
 DECLARE_EV_KEY(shiftKey);
 DECLARE_EV_KEY(controlKey);
 DECLARE_EV_KEY(altKey);
+DECLARE_EV_KEY(display);
 
 Handle<Value> createEventQueue(const Arguments& args)
 {
@@ -100,6 +102,7 @@ void PSEventQueue::init(Handle<Object> target)
     INIT_EV_KEY(shiftKey, "shiftKey");
     INIT_EV_KEY(controlKey, "controlKey");
     INIT_EV_KEY(altKey, "altKey");
+    INIT_EV_KEY(display, "display");
 }
 
 Handle<Value> PSEventQueue::createInstance()
@@ -276,6 +279,7 @@ Handle<Value> PSEventQueue::WaitForEventUntil(const Arguments& args)
 #define EV_SET_UINT(k, v)   eo->Set(ev_key_##k, Integer::NewFromUnsigned(v))
 #define EV_SET_FLOAT(k, v)  eo->Set(ev_key_##k, Number::New(v))
 #define EV_SET_BOOL(k, v)   eo->Set(ev_key_##k, v ? True() : False())
+#define EV_SET_DISPLAY(v)   eo->Set(ev_key_display, lookupDisplay(v))
 
 Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
 {
@@ -303,7 +307,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
         case ALLEGRO_EVENT_KEY_DOWN:
         case ALLEGRO_EVENT_KEY_UP:
             EV_SET_INT(keycode, evt->keyboard.keycode);
-            // TODO: display
+            EV_SET_DISPLAY(evt->keyboard.display);
             break;
         case ALLEGRO_EVENT_KEY_CHAR:
             EV_SET_INT(keycode, evt->keyboard.keycode);
@@ -318,7 +322,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_BOOL(metaKey, m & ALLEGRO_KEYMOD_COMMAND);
 
             EV_SET_INT(repeat, evt->keyboard.repeat);
-            // TODO: display
+            EV_SET_DISPLAY(evt->keyboard.display);
             break;
         case ALLEGRO_EVENT_MOUSE_AXES:
         case ALLEGRO_EVENT_MOUSE_WARPED:
@@ -330,7 +334,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_INT(dy, evt->mouse.dy);
             EV_SET_INT(dz, evt->mouse.dz);
             EV_SET_INT(dw, evt->mouse.dw);
-            // TODO: display
+            EV_SET_DISPLAY(evt->mouse.display);
             break;
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
@@ -339,7 +343,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_INT(z, evt->mouse.z);
             EV_SET_INT(w, evt->mouse.w);
             EV_SET_UINT(button, evt->mouse.button);
-            // TODO: display
+            EV_SET_DISPLAY(evt->mouse.display);
             break;
         case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
         case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
@@ -348,7 +352,6 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_INT(z, evt->mouse.z);
             EV_SET_INT(w, evt->mouse.w);
             EV_SET_UINT(button, evt->mouse.button);
-            // TODO: display
             break;
         case ALLEGRO_EVENT_DISPLAY_EXPOSE:
         case ALLEGRO_EVENT_DISPLAY_RESIZE:
@@ -356,18 +359,18 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_INT(y, evt->display.y);
             EV_SET_INT(width, evt->display.width);
             EV_SET_INT(height, evt->display.height);
-            // TODO: display
+            EV_SET_DISPLAY(evt->display.source);
             break;
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
         case ALLEGRO_EVENT_DISPLAY_LOST:
         case ALLEGRO_EVENT_DISPLAY_FOUND:
         case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
         case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
-            // TODO: display
+            EV_SET_DISPLAY(evt->display.source);
             break;
         case ALLEGRO_EVENT_DISPLAY_ORIENTATION:
             EV_SET_INT(orientation, evt->display.orientation);
-            // TODO: display
+            EV_SET_DISPLAY(evt->display.source);
             break;
     }
 
