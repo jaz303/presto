@@ -116,7 +116,7 @@ function init() {
 }
 
 function createDisplay(width, height, opts) {
-    bindings.createDisplay();
+    return bindings.createDisplay();
 }
 
 exports.init                = init;
