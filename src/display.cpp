@@ -19,14 +19,26 @@ struct {
 } displays[MAX_DISPLAYS];
 
 Handle<Value> createDisplay(const Arguments &args) {
-    
-    // TODO: parse args
+
+    int width = args[0]->ToInteger()->Value();
+    int height = args[1]->ToInteger()->Value();
+    int flags = args[2]->ToInteger()->Value();
+
+    int x = INT_MAX;
+    int y = INT_MAX;
+
+    if (args.Length() >= 5) {
+        x = args[3]->ToInteger()->Value();
+        y = args[4]->ToInteger()->Value();
+    }
 
     HandleScope _;
 
     for (int i = 0; i < MAX_DISPLAYS; ++i) {
         if (!displays[i].inUse) {
-            ALLEGRO_DISPLAY *display = al_create_display(800, 600);
+            al_set_new_window_position(x, y);
+            al_set_new_display_flags(flags);
+            ALLEGRO_DISPLAY *display = al_create_display(width, height);
             if (!display) {
                 break;
             }

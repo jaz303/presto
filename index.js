@@ -117,7 +117,42 @@ function init() {
 }
 
 function createDisplay(width, height, opts) {
-    return bindings.createDisplay();
+
+    opts = opts || {};
+
+    var flags = 0;
+
+    var mode = opts.mode || 'window';
+
+    if (mode === 'window') {
+        flags |= k.ALLEGRO_WINDOWED;
+    } else if (mode === 'fullscreen') {
+        flags |= k.ALLEGRO_FULLSCREEN;
+    } else if (mode === 'fullscreen-window') {
+        flags |= k.ALLEGRO_WINDOWED;
+        flags |= k.ALLEGRO_FULLSCREEN_WINDOW;
+    } else {
+        throw "invalid mode; valid modes are: 'window', 'fullscreen' or 'fullscreen-window'"
+    }
+
+    if (opts.resizable) flags |= k.ALLEGRO_RESIZABLE;
+    if (opts.openGL)    flags |= k.ALLEGRO_OPENGL;
+    if (opts.noFrame)   flags |= k.ALLEGRO_NOFRAME;
+
+    var args = [parseInt(width, 10), parseInt(height, 10), flags];
+    if ('x' in opts && 'y' in opts) {
+        args.push(parseInt(opts.x, 10));
+        args.push(parseInt(opts.y, 10));
+    }
+
+    var display = bindings.createDisplay.apply(bindings, args);
+
+    if ('title' in opts) {
+        display.setTitle(opts.title);
+    }
+
+    return display;
+
 }
 
 //
