@@ -231,9 +231,97 @@ Handle<Value> PSEventQueue::WaitForEventUntil(const Arguments& args)
     }
 }
 
+#define EV_SET_INT(k, v)    eo->Set(String::New(#k), Integer::New(v))
+#define EV_SET_UINT(k, v)   eo->Set(String::New(#k), Integer::NewFromUnsigned(v))
+#define EV_SET_FLOAT(k, v)  eo->Set(String::New(#k), Number::New(v))
+#define EV_SET_BOOL(k, v)   eo->Set(String::New(#k), v ? True() : False())
+
 Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
 {
-    // TODO: mojo!
     HandleScope _;
-    return _.Close(Undefined());
+
+    Handle<Object> eo = Object::New();
+
+    eo->Set(String::New("type"), Integer::NewFromUnsigned(evt->type));
+
+    switch (evt->type) {
+        case ALLEGRO_EVENT_JOYSTICK_AXIS:
+            // TODO: joystick ID
+            EV_SET_INT(stick, evt->joystick.stick);
+            EV_SET_INT(axis, evt->joystick.axis);
+            EV_SET_FLOAT(pos, evt->joystick.pos);
+            break;
+        case ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN:
+        case ALLEGRO_EVENT_JOYSTICK_BUTTON_UP:
+            // TODO: joystick ID
+            EV_SET_INT(button, evt->joystick.button);
+            break;
+        case ALLEGRO_EVENT_JOYSTICK_CONFIGURATION:
+            break;
+        case ALLEGRO_EVENT_KEY_DOWN:
+        case ALLEGRO_EVENT_KEY_UP:
+            EV_SET_INT(keycode, evt->keyboard.keycode);
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_KEY_CHAR:
+            EV_SET_INT(keycode, evt->keyboard.keycode);
+            EV_SET_INT(unichar, evt->keyboard.unichar);
+            // TODO: decode character to string
+            EV_SET_INT(modifiers, evt->keyboard.modifiers);
+            // TODO: decode modifiers
+            EV_SET_INT(repeat, evt->keyboard.repeat);
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_MOUSE_AXES:
+        case ALLEGRO_EVENT_MOUSE_WARPED:
+            EV_SET_INT(x, evt->mouse.x);
+            EV_SET_INT(y, evt->mouse.y);
+            EV_SET_INT(z, evt->mouse.z);
+            EV_SET_INT(w, evt->mouse.w);
+            EV_SET_INT(dx, evt->mouse.dx);
+            EV_SET_INT(dy, evt->mouse.dy);
+            EV_SET_INT(dz, evt->mouse.dz);
+            EV_SET_INT(dw, evt->mouse.dw);
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+        case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+            EV_SET_INT(x, evt->mouse.x);
+            EV_SET_INT(y, evt->mouse.y);
+            EV_SET_INT(z, evt->mouse.z);
+            EV_SET_INT(w, evt->mouse.w);
+            EV_SET_UINT(button, evt->mouse.button);
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
+        case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+            EV_SET_INT(x, evt->mouse.x);
+            EV_SET_INT(y, evt->mouse.y);
+            EV_SET_INT(z, evt->mouse.z);
+            EV_SET_INT(w, evt->mouse.w);
+            EV_SET_UINT(button, evt->mouse.button);
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_DISPLAY_EXPOSE:
+        case ALLEGRO_EVENT_DISPLAY_RESIZE:
+            EV_SET_INT(x, evt->display.x);
+            EV_SET_INT(y, evt->display.y);
+            EV_SET_INT(width, evt->display.width);
+            EV_SET_INT(height, evt->display.height);
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+        case ALLEGRO_EVENT_DISPLAY_LOST:
+        case ALLEGRO_EVENT_DISPLAY_FOUND:
+        case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+        case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
+            // TODO: display
+            break;
+        case ALLEGRO_EVENT_DISPLAY_ORIENTATION:
+            EV_SET_INT(orientation, evt->display.orientation);
+            // TODO: display
+            break;
+    }
+
+    return _.Close(eo);
 }
