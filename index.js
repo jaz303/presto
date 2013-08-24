@@ -1,4 +1,5 @@
-var bindings = require("bindings")("presto_bindings.node");
+var bindings    = require("bindings")("presto_bindings.node"),
+    k           = bindings.installConstants({});
 
 function installSubSystems(systems) {
 
@@ -119,6 +120,10 @@ function createDisplay(width, height, opts) {
     return bindings.createDisplay();
 }
 
+//
+//
+
+exports.constants           = k;
 exports.init                = init;
 exports.createContext       = createContext;
 
