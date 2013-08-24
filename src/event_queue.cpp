@@ -351,7 +351,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
             EV_SET_INT(y, evt->mouse.y);
             EV_SET_INT(z, evt->mouse.z);
             EV_SET_INT(w, evt->mouse.w);
-            EV_SET_UINT(button, evt->mouse.button);
+            EV_SET_DISPLAY(evt->mouse.display);
             break;
         case ALLEGRO_EVENT_DISPLAY_EXPOSE:
         case ALLEGRO_EVENT_DISPLAY_RESIZE:
