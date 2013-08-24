@@ -11,6 +11,9 @@ Handle<Value> createDisplay(const Arguments &args);
 Handle<Value> inhibitScreensaver(const Arguments &args);
 Handle<Value> waitForVSync(const Arguments& args);
 
+// private internal function
+Handle<Value> lookupDisplay(ALLEGRO_DISPLAY *display);
+
 class PSDisplay : node::ObjectWrap {
 public:
     PSDisplay(ALLEGRO_DISPLAY *display);
@@ -18,7 +21,7 @@ public:
 
     static Persistent<FunctionTemplate> tpl;
     static void init(Handle<Object> target);
-    static Handle<Value> createInstance(ALLEGRO_DISPLAY *display);
+    static Handle<Object> createInstance(ALLEGRO_DISPLAY *display);
 
     static Handle<Value> GetBackBuffer(Local<String> prop, const AccessorInfo &info);
     static Handle<Value> GetWidth(Local<String> prop, const AccessorInfo &info);

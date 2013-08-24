@@ -11,10 +11,55 @@
 
 using namespace v8;
 
+#define MAX_DISPLAYS 16
+struct {
+    bool inUse;
+    ALLEGRO_DISPLAY *alDisplay;
+    Persistent<Object> psDisplay;
+} displays[MAX_DISPLAYS];
+
 Handle<Value> createDisplay(const Arguments &args) {
+    
     // TODO: parse args
-    ALLEGRO_DISPLAY *display = al_create_display(800, 600);
-    return HandleScope().Close(PSDisplay::createInstance(display));
+
+    HandleScope _;
+
+    for (int i = 0; i < MAX_DISPLAYS; ++i) {
+        if (!displays[i].inUse) {
+            ALLEGRO_DISPLAY *display = al_create_display(800, 600);
+            if (!display) {
+                break;
+            }
+            Handle<Object> wrapped = PSDisplay::createInstance(display);
+            displays[i].inUse = true;
+            displays[i].alDisplay = display;
+            displays[i].psDisplay = Persistent<Object>::New(wrapped);
+            return _.Close(wrapped);
+        }
+    }
+
+    return _.Close(Null());
+
+}
+
+Handle<Value> lookupDisplay(ALLEGRO_DISPLAY *display) {
+    for (int i = 0; i < MAX_DISPLAYS; ++i) {
+        if (displays[i].alDisplay == display) {
+            return displays[i].psDisplay;
+        }
+    }
+    return HandleScope().Close(Null());
+}
+
+void unmapDisplay(ALLEGRO_DISPLAY *display) {
+    for (int i = 0; i < MAX_DISPLAYS; ++i) {
+        if (displays[i].alDisplay == display) {
+            displays[i].inUse = false;
+            displays[i].alDisplay = NULL;
+            displays[i].psDisplay.Dispose();
+            return;
+        }
+    }
 }
 
 Handle<Value> inhibitScreensaver(const Arguments &args) {
@@ -42,6 +87,13 @@ PSDisplay::~PSDisplay()
 void PSDisplay::init(Handle<Object> target)
 {
     HandleScope _;
+
+    //
+    // Display pool
+
+    for (int i = 0; i < MAX_DISPLAYS; ++i) {
+        displays[i].inUse = false;
+    }
 
     //
     // Functions
@@ -82,7 +134,7 @@ void PSDisplay::init(Handle<Object> target)
     PSDisplay::tpl = Persistent<FunctionTemplate>::New(ft);
 }
 
-Handle<Value> PSDisplay::createInstance(ALLEGRO_DISPLAY *display)
+Handle<Object> PSDisplay::createInstance(ALLEGRO_DISPLAY *display)
 {
     HandleScope _;
     
@@ -260,6 +312,7 @@ Handle<Value> PSDisplay::Destroy(const Arguments& args)
 void PSDisplay::destroy()
 {
     if (display_ != NULL) {
+        unmapDisplay(display_);
         al_destroy_display(display_);
         display_ = NULL;
     }
