@@ -12,6 +12,8 @@ void init(Handle<Object> target) {
     PSEventQueue::init(target);
     PSDisplay::init(target);
 
+    NODE_SET_METHOD(target, "installConstants", installConstants);
+
     NODE_SET_METHOD(target, "ps_install", ps_install);
     NODE_SET_METHOD(target, "ps_uninstall", ps_uninstall);
 
