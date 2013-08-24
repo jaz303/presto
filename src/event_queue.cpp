@@ -1,11 +1,10 @@
 #include "event_queue.h"
 
+#include "helpers.h"
+
 #define UNWRAP_SELF \
     PSEventQueue *self = node::ObjectWrap::Unwrap<PSEventQueue>(args.This()); \
     (void)self
-
-#define THROW(message) \
-    return ThrowException(Exception::Error(String::New(message)))
 
 #define DECLARE_EV_KEY(name)        static Persistent<String> ev_key_##name
 #define INIT_EV_KEY(name, value)    ev_key_##name = Persistent<String>::New(String::New(value));

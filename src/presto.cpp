@@ -10,6 +10,7 @@
 void init(Handle<Object> target) {
 
     PSEventQueue::init(target);
+    PSDisplay::init(target);
 
     NODE_SET_METHOD(target, "ps_install", ps_install);
     NODE_SET_METHOD(target, "ps_uninstall", ps_uninstall);
@@ -21,9 +22,6 @@ void init(Handle<Object> target) {
     EXPOSE_SUBYSTEM(font);
     EXPOSE_SUBYSTEM(image);
     EXPOSE_SUBYSTEM(primitives);
-
-    NODE_SET_METHOD(target, "createDisplay", createDisplay);
-    NODE_SET_METHOD(target, "inhibitScreensaver", inhibitScreensaver);
 
     NODE_SET_METHOD(target, "createEventQueue", createEventQueue);
 

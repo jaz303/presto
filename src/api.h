@@ -6,6 +6,7 @@
 using namespace v8;
 
 #include "event_queue.h"
+#include "display.h"
 
 Handle<Value> ps_install(const Arguments& args);
 Handle<Value> ps_uninstall(const Arguments &args);
@@ -23,8 +24,5 @@ Handle<Value> ps_install_image(const Arguments& args);
 Handle<Value> ps_uninstall_image(const Arguments &args);
 Handle<Value> ps_install_primitives(const Arguments& args);
 Handle<Value> ps_uninstall_primitives(const Arguments &args);
-
-Handle<Value> createDisplay(const Arguments &args);
-Handle<Value> inhibitScreensaver(const Arguments &args);
 
 #endif
