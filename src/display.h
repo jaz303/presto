@@ -19,6 +19,8 @@ public:
     PSDisplay(ALLEGRO_DISPLAY *display);
     ~PSDisplay();
 
+    ALLEGRO_DISPLAY *allegroDisplay() const;
+
     static Persistent<FunctionTemplate> tpl;
     static void init(Handle<Object> target);
     static Handle<Object> createInstance(ALLEGRO_DISPLAY *display);

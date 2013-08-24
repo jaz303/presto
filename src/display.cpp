@@ -96,6 +96,11 @@ PSDisplay::~PSDisplay()
     destroy();
 }
 
+ALLEGRO_DISPLAY* PSDisplay::allegroDisplay() const
+{
+    return display_;
+}
+
 void PSDisplay::init(Handle<Object> target)
 {
     HandleScope _;
