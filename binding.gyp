@@ -7,7 +7,8 @@
         "src/init.cpp",
         "src/display.cpp",
         "src/event_queue.cpp",
-        "src/presto.cpp"
+        "src/presto.cpp",
+        "src/constants.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {

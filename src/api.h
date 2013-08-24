@@ -8,6 +8,8 @@ using namespace v8;
 #include "event_queue.h"
 #include "display.h"
 
+Handle<Value> installConstants(const Arguments& args);
+
 Handle<Value> ps_install(const Arguments& args);
 Handle<Value> ps_uninstall(const Arguments &args);
 Handle<Value> ps_install_joystick(const Arguments& args);
