@@ -21,6 +21,8 @@ public:
     static void init(Handle<Object> target);
     static Handle<Object> createInstance(ALLEGRO_BITMAP *bitmap);
 
+    static Handle<Value> Save(const Arguments& args);
+
 private:
     ALLEGRO_BITMAP *bitmap_;
 

@@ -65,6 +65,8 @@ void PSBitmap::init(Handle<Object> target)
     Handle<ObjectTemplate> it = ft->InstanceTemplate();
     it->SetInternalFieldCount(1);
 
+    NODE_SET_PROTOTYPE_METHOD(ft, "save", Save);
+
     PSBitmap::tpl = Persistent<FunctionTemplate>::New(ft);
 }
 
@@ -78,4 +80,18 @@ Handle<Object> PSBitmap::createInstance(ALLEGRO_BITMAP *bitmap)
     theBitmap->Wrap(instance);
     
     return _.Close(instance);
+}
+
+Handle<Value> PSBitmap::Save(const Arguments& args)
+{
+    HandleScope _;
+
+    if (args.Length() < 1)
+            THROW("PSBitmap.save() requires one argument");
+
+    UNWRAP_SELF;
+    const char *filename = *String::AsciiValue(args[0]);
+    bool success = al_save_bitmap(filename, self->bitmap_);
+
+    return _.Close(success ? True() : False());
 }
