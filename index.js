@@ -174,3 +174,8 @@ exports.inhibitScreensaver  = bindings.inhibitScreensaver;
 // Events
 
 exports.createEventQueue    = bindings.createEventQueue;
+
+//
+// Bitmaps
+
+exports.loadBitmap          = bindings.loadBitmap;
