@@ -8,8 +8,10 @@ var display = presto.createDisplay(300, 600, {resizable: false, x: 0, y: 0, titl
 // display.resize(400, 400);
 // display.setPosition(0, 0);
 
-
 var frames = 0;
+
+var image = presto.loadBitmap('guardian.jpg');
+console.log(image);
 
 game.on('keydown', function() {
     game.exit();
