@@ -11,7 +11,7 @@ var display = presto.createDisplay(300, 600, {resizable: false, x: 0, y: 0, titl
 var frames = 0;
 
 var image = presto.loadBitmap('guardian.jpg');
-console.log(image);
+console.log(image.save("foo.tga"));
 
 game.on('keydown', function() {
     game.exit();
