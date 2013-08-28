@@ -21,8 +21,6 @@ Handle<Value> createBitmap(const Arguments &args) {
 
 Handle<Value> loadBitmap(const Arguments &args) {
 
-    HandleScope _;
-
     if (args.Length() < 1)
         THROW("loadBitmap() requires one argument");
 
@@ -32,7 +30,7 @@ Handle<Value> loadBitmap(const Arguments &args) {
     if (bitmap) {
         return PSBitmap::createInstance(bitmap);
     } else {
-        return _.Close(Null());    
+        return HandleScope().Close(Null());    
     }
 
 }
