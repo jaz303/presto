@@ -56,7 +56,7 @@ This is what it will look like:
   * <del>Display</del>
   * Colors
   * Graphics
-  * Image I/O
+  * <del>Image I/O</del>
   * Primitives
   * Fonts
   * Mouse
@@ -75,6 +75,8 @@ I've skipped implementing some tedious stuff that's not immediately useful to me
   * A few of the display flags are not recognised at the JS wrapper level: `ALLEGRO_OPENGL_3_0`, `ALLEGRO_OPENGL_FORWARD_COMPATIBLE`, `ALLEGRO_GENERATE_EXPOSE_EVENTS`
   * Enumeration and interrogation of available display modes
   * There are a lot of missing constants
+  * Image I/O works with filenames only, not file descriptors
+  * PNG/JPG saving is untested - I don't seem to have support compiled into Allegro
 
 ## Limitations
 
