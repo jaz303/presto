@@ -11,6 +11,7 @@ void init(Handle<Object> target) {
 
     PSEventQueue::init(target);
     PSDisplay::init(target);
+    PSBitmap::init(target);
 
     NODE_SET_METHOD(target, "installConstants", installConstants);
 
