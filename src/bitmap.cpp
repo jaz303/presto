@@ -23,7 +23,17 @@ Handle<Value> loadBitmap(const Arguments &args) {
 
     HandleScope _;
 
-    return _.Close(Null());
+    if (args.Length() < 1)
+        THROW("loadBitmap() requires one argument");
+
+    const char *filename = *String::AsciiValue(args[0]);
+    ALLEGRO_BITMAP *bitmap = al_load_bitmap(filename);
+
+    if (bitmap) {
+        return PSBitmap::createInstance(bitmap);
+    } else {
+        return _.Close(Null());    
+    }
 
 }
 
