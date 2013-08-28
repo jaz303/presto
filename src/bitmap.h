@@ -22,6 +22,7 @@ public:
     static Handle<Object> createInstance(ALLEGRO_BITMAP *bitmap);
 
     static Handle<Value> Save(const Arguments& args);
+    static Handle<Value> Use(const Arguments& args);
 
 private:
     ALLEGRO_BITMAP *bitmap_;

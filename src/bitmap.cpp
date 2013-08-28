@@ -66,6 +66,7 @@ void PSBitmap::init(Handle<Object> target)
     it->SetInternalFieldCount(1);
 
     NODE_SET_PROTOTYPE_METHOD(ft, "save", Save);
+    NODE_SET_PROTOTYPE_METHOD(ft, "use", Use);
 
     PSBitmap::tpl = Persistent<FunctionTemplate>::New(ft);
 }
@@ -94,4 +95,14 @@ Handle<Value> PSBitmap::Save(const Arguments& args)
     bool success = al_save_bitmap(filename, self->bitmap_);
 
     return _.Close(success ? True() : False());
+}
+
+Handle<Value> PSBitmap::Use(const Arguments& args)
+{
+    HandleScope _;
+
+    UNWRAP_SELF;
+    al_set_target_bitmap(self->bitmap_);
+
+    return _.Close(Undefined());
 }
