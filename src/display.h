@@ -41,6 +41,7 @@ public:
 
     static Handle<Value> AcknowledgeResize(const Arguments &args);
     static Handle<Value> Flip(const Arguments& args);
+    static Handle<Value> Use(const Arguments& args);
     static Handle<Value> Resize(const Arguments& args);
     static Handle<Value> Destroy(const Arguments& args);
 

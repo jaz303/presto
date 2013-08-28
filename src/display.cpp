@@ -144,6 +144,7 @@ void PSDisplay::init(Handle<Object> target)
 
     NODE_SET_PROTOTYPE_METHOD(ft, "acknowledgeResize", AcknowledgeResize);
     NODE_SET_PROTOTYPE_METHOD(ft, "flip", Flip);
+    NODE_SET_PROTOTYPE_METHOD(ft, "use", Use);
     NODE_SET_PROTOTYPE_METHOD(ft, "resize", Resize);
     NODE_SET_PROTOTYPE_METHOD(ft, "destroy", Destroy);
 
@@ -299,6 +300,16 @@ Handle<Value> PSDisplay::Flip(const Arguments& args)
     al_set_target_backbuffer(self->display_);
     al_flip_display();
 
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSDisplay::Use(const Arguments& args)
+{
+    HandleScope _;
+
+    UNWRAP_SELF;
+    al_set_target_backbuffer(self->display_);
+    
     return _.Close(Undefined());
 }
 
