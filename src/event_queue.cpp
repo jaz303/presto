@@ -12,6 +12,7 @@
 
 Persistent<FunctionTemplate> PSEventQueue::tpl;
 
+DECLARE_EV_KEY(type);
 DECLARE_EV_KEY(x);
 DECLARE_EV_KEY(y);
 DECLARE_EV_KEY(z);
@@ -79,6 +80,7 @@ void PSEventQueue::init(Handle<Object> target)
 
     PSEventQueue::tpl = Persistent<FunctionTemplate>::New(ft);
 
+    INIT_EV_KEY(x, "type");
     INIT_EV_KEY(x, "x");
     INIT_EV_KEY(y, "y");
     INIT_EV_KEY(z, "z");
@@ -320,7 +322,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
     Handle<Object> eo = Object::New();
     int m;
 
-    eo->Set(String::New("type"), Integer::NewFromUnsigned(evt->type));
+    eo->Set(ev_key_type, Integer::NewFromUnsigned(evt->type));
 
     switch (evt->type) {
         case ALLEGRO_EVENT_JOYSTICK_AXIS:
