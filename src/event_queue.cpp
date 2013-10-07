@@ -7,36 +7,33 @@
     PSEventQueue *self = node::ObjectWrap::Unwrap<PSEventQueue>(args.This()); \
     (void)self
 
-#define DECLARE_EV_KEY(name)        static Persistent<String> ev_key_##name
-#define INIT_EV_KEY(name, value)    ev_key_##name = Persistent<String>::New(String::New(value));
-
 Persistent<FunctionTemplate> PSEventQueue::tpl;
 
-DECLARE_EV_KEY(type);
-DECLARE_EV_KEY(x);
-DECLARE_EV_KEY(y);
-DECLARE_EV_KEY(z);
-DECLARE_EV_KEY(w);
-DECLARE_EV_KEY(dx);
-DECLARE_EV_KEY(dy);
-DECLARE_EV_KEY(dz);
-DECLARE_EV_KEY(dw);
-DECLARE_EV_KEY(width);
-DECLARE_EV_KEY(height);
-DECLARE_EV_KEY(button);
-DECLARE_EV_KEY(stick);
-DECLARE_EV_KEY(axis);
-DECLARE_EV_KEY(pos);
-DECLARE_EV_KEY(orientation);
-DECLARE_EV_KEY(keycode);
-DECLARE_EV_KEY(unichar);
-DECLARE_EV_KEY(repeat);
-DECLARE_EV_KEY(modifiers);
-DECLARE_EV_KEY(metaKey);
-DECLARE_EV_KEY(shiftKey);
-DECLARE_EV_KEY(controlKey);
-DECLARE_EV_KEY(altKey);
-DECLARE_EV_KEY(display);
+PS_DECLARE_KEY(ev_type);
+PS_DECLARE_KEY(ev_x);
+PS_DECLARE_KEY(ev_y);
+PS_DECLARE_KEY(ev_z);
+PS_DECLARE_KEY(ev_w);
+PS_DECLARE_KEY(ev_dx);
+PS_DECLARE_KEY(ev_dy);
+PS_DECLARE_KEY(ev_dz);
+PS_DECLARE_KEY(ev_dw);
+PS_DECLARE_KEY(ev_width);
+PS_DECLARE_KEY(ev_height);
+PS_DECLARE_KEY(ev_button);
+PS_DECLARE_KEY(ev_stick);
+PS_DECLARE_KEY(ev_axis);
+PS_DECLARE_KEY(ev_pos);
+PS_DECLARE_KEY(ev_orientation);
+PS_DECLARE_KEY(ev_keycode);
+PS_DECLARE_KEY(ev_unichar);
+PS_DECLARE_KEY(ev_repeat);
+PS_DECLARE_KEY(ev_modifiers);
+PS_DECLARE_KEY(ev_metaKey);
+PS_DECLARE_KEY(ev_shiftKey);
+PS_DECLARE_KEY(ev_controlKey);
+PS_DECLARE_KEY(ev_altKey);
+PS_DECLARE_KEY(ev_display);
 
 Handle<Value> createEventQueue(const Arguments& args)
 {
@@ -79,32 +76,32 @@ void PSEventQueue::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "waitForEventUntil", WaitForEventUntil);
 
     PSEventQueue::tpl = Persistent<FunctionTemplate>::New(ft);
-
-    INIT_EV_KEY(x, "type");
-    INIT_EV_KEY(x, "x");
-    INIT_EV_KEY(y, "y");
-    INIT_EV_KEY(z, "z");
-    INIT_EV_KEY(w, "w");
-    INIT_EV_KEY(dx, "dx");
-    INIT_EV_KEY(dy, "dy");
-    INIT_EV_KEY(dz, "dz");
-    INIT_EV_KEY(dw, "dw");
-    INIT_EV_KEY(width, "width");
-    INIT_EV_KEY(height, "height");
-    INIT_EV_KEY(button, "button");
-    INIT_EV_KEY(stick, "stick");
-    INIT_EV_KEY(axis, "axis");
-    INIT_EV_KEY(pos, "pos");
-    INIT_EV_KEY(orientation, "orientation");
-    INIT_EV_KEY(keycode, "keycode");
-    INIT_EV_KEY(unichar, "unichar");
-    INIT_EV_KEY(repeat, "repeat");
-    INIT_EV_KEY(modifiers, "modifiers");
-    INIT_EV_KEY(metaKey, "metaKey");
-    INIT_EV_KEY(shiftKey, "shiftKey");
-    INIT_EV_KEY(controlKey, "controlKey");
-    INIT_EV_KEY(altKey, "altKey");
-    INIT_EV_KEY(display, "display");
+    
+    PS_INIT_KEY(ev_x, "type");
+    PS_INIT_KEY(ev_x, "x");
+    PS_INIT_KEY(ev_y, "y");
+    PS_INIT_KEY(ev_z, "z");
+    PS_INIT_KEY(ev_w, "w");
+    PS_INIT_KEY(ev_dx, "dx");
+    PS_INIT_KEY(ev_dy, "dy");
+    PS_INIT_KEY(ev_dz, "dz");
+    PS_INIT_KEY(ev_dw, "dw");
+    PS_INIT_KEY(ev_width, "width");
+    PS_INIT_KEY(ev_height, "height");
+    PS_INIT_KEY(ev_button, "button");
+    PS_INIT_KEY(ev_stick, "stick");
+    PS_INIT_KEY(ev_axis, "axis");
+    PS_INIT_KEY(ev_pos, "pos");
+    PS_INIT_KEY(ev_orientation, "orientation");
+    PS_INIT_KEY(ev_keycode, "keycode");
+    PS_INIT_KEY(ev_unichar, "unichar");
+    PS_INIT_KEY(ev_repeat, "repeat");
+    PS_INIT_KEY(ev_modifiers, "modifiers");
+    PS_INIT_KEY(ev_metaKey, "metaKey");
+    PS_INIT_KEY(ev_shiftKey, "shiftKey");
+    PS_INIT_KEY(ev_controlKey, "controlKey");
+    PS_INIT_KEY(ev_altKey, "altKey");
+    PS_INIT_KEY(ev_display, "display");
 }
 
 Handle<Value> PSEventQueue::createInstance()
@@ -309,11 +306,11 @@ Handle<Value> PSEventQueue::WaitForEventUntil(const Arguments& args)
     }
 }
 
-#define EV_SET_INT(k, v)    eo->Set(ev_key_##k, Integer::New(v))
-#define EV_SET_UINT(k, v)   eo->Set(ev_key_##k, Integer::NewFromUnsigned(v))
-#define EV_SET_FLOAT(k, v)  eo->Set(ev_key_##k, Number::New(v))
-#define EV_SET_BOOL(k, v)   eo->Set(ev_key_##k, v ? True() : False())
-#define EV_SET_DISPLAY(v)   eo->Set(ev_key_display, lookupDisplay(v))
+#define EV_SET_INT(k, v)    eo->Set(key_ev_##k, Integer::New(v))
+#define EV_SET_UINT(k, v)   eo->Set(key_ev_##k, Integer::NewFromUnsigned(v))
+#define EV_SET_FLOAT(k, v)  eo->Set(key_ev_##k, Number::New(v))
+#define EV_SET_BOOL(k, v)   eo->Set(key_ev_##k, v ? True() : False())
+#define EV_SET_DISPLAY(v)   eo->Set(key_ev_display, lookupDisplay(v))
 
 Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
 {
@@ -322,7 +319,7 @@ Handle<Value> PSEventQueue::wrapEvent(ALLEGRO_EVENT *evt)
     Handle<Object> eo = Object::New();
     int m;
 
-    eo->Set(ev_key_type, Integer::NewFromUnsigned(evt->type));
+    eo->Set(key_ev_type, Integer::NewFromUnsigned(evt->type));
 
     switch (evt->type) {
         case ALLEGRO_EVENT_JOYSTICK_AXIS:
