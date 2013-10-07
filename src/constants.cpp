@@ -13,6 +13,12 @@ Handle<Value> installConstants(const Arguments& args) {
     Handle<Object> obj = Handle<Object>::Cast(args[0]);
 
     //
+    // Draw flags
+
+    K_INT(ALLEGRO_FLIP_HORIZONTAL);
+    K_INT(ALLEGRO_FLIP_VERTICAL);
+
+    //
     // Display flags
 
     K_INT(ALLEGRO_WINDOWED);
