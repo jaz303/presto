@@ -86,8 +86,14 @@ void PSBitmap::init(Handle<Object> target)
     Handle<ObjectTemplate> it = ft->InstanceTemplate();
     it->SetInternalFieldCount(1);
 
+    it->SetAccessor(String::New("width"), GetWidth);
+    it->SetAccessor(String::New("height"), GetHeight);
+    
     NODE_SET_PROTOTYPE_METHOD(ft, "save", Save);
     NODE_SET_PROTOTYPE_METHOD(ft, "use", Use);
+
+    NODE_SET_PROTOTYPE_METHOD(ft, "isLocked",           IsLocked);
+    NODE_SET_PROTOTYPE_METHOD(ft, "isSubBitmap",        IsSubBitmap);
 
     NODE_SET_PROTOTYPE_METHOD(ft, "clearToColor",       ClearToColor);
     NODE_SET_PROTOTYPE_METHOD(ft, "draw",               Draw);
@@ -131,6 +137,26 @@ Handle<Object> PSBitmap::createInstance(ALLEGRO_BITMAP *bitmap)
     return _.Close(instance);
 }
 
+//
+// Properties
+
+Handle<Value> PSBitmap::GetWidth(Local<String> prop, const AccessorInfo &info)
+{
+    HandleScope _;
+    UNWRAP_SELF_PROP;
+    return _.Close(Integer::New(al_get_bitmap_width(self->bitmap_)));
+}
+
+Handle<Value> PSBitmap::GetHeight(Local<String> prop, const AccessorInfo &info)
+{
+    HandleScope _;
+    UNWRAP_SELF_PROP;
+    return _.Close(Integer::New(al_get_bitmap_height(self->bitmap_)));
+}
+
+//
+//
+
 Handle<Value> PSBitmap::Save(const Arguments& args)
 {
     HandleScope _;
@@ -149,6 +175,18 @@ Handle<Value> PSBitmap::Use(const Arguments& args)
 {
     PSTarget::setTargetPSBitmap(args.This());
     return HandleScope().Close(Undefined());
+}
+
+Handle<Value> PSBitmap::IsLocked(const Arguments& args)
+{
+    UNWRAP_SELF;
+    return HandleScope().Close(al_is_bitmap_locked(self->bitmap_) ? True() : False());
+}
+
+Handle<Value> PSBitmap::IsSubBitmap(const Arguments& args)
+{
+    UNWRAP_SELF;
+    return HandleScope().Close(al_is_sub_bitmap(self->bitmap_) ? True() : False());
 }
 
 //

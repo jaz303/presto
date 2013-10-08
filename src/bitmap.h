@@ -21,8 +21,20 @@ public:
     static void init(Handle<Object> target);
     static Handle<Object> createInstance(ALLEGRO_BITMAP *bitmap);
 
+    //
+    // Properties
+
+    static Handle<Value> GetWidth(Local<String> prop, const AccessorInfo &info);
+    static Handle<Value> GetHeight(Local<String> prop, const AccessorInfo &info);
+
+    //
+    //
+
     static Handle<Value> Save(const Arguments& args);
     static Handle<Value> Use(const Arguments& args);
+
+    static Handle<Value> IsLocked(const Arguments& args);
+    static Handle<Value> IsSubBitmap(const Arguments& args);
 
     //
     // Drawing
