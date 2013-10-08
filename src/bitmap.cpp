@@ -1,5 +1,6 @@
 #include "bitmap.h"
 #include "helpers.h"
+#include "target.h"
 #include <v8.h>
 #include <allegro5/allegro.h>
 
@@ -146,12 +147,8 @@ Handle<Value> PSBitmap::Save(const Arguments& args)
 
 Handle<Value> PSBitmap::Use(const Arguments& args)
 {
-    HandleScope _;
-
-    UNWRAP_SELF;
-    al_set_target_bitmap(self->bitmap_);
-
-    return _.Close(Undefined());
+    PSTarget::setTargetPSBitmap(args.This());
+    return HandleScope().Close(Undefined());
 }
 
 //
