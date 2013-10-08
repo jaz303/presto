@@ -176,6 +176,16 @@ Handle<Value> installConstants(const Arguments& args) {
     K_INT(ALLEGRO_KEYMOD_ACCENT3);
     K_INT(ALLEGRO_KEYMOD_ACCENT4);
 
+    // Blending
+
+    K_INT(ALLEGRO_ADD);
+    K_INT(ALLEGRO_DEST_MINUS_SRC);
+    K_INT(ALLEGRO_SRC_MINUS_DEST);
+    K_INT(ALLEGRO_ZERO);
+    K_INT(ALLEGRO_ONE);
+    K_INT(ALLEGRO_ALPHA);
+    K_INT(ALLEGRO_INVERSE_ALPHA);
+
     return _.Close(obj);
 
 }

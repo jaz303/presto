@@ -101,6 +101,39 @@ static Handle<Value> resetClippingRectangle(const Arguments& args) {
 
 }
 
+static Handle<Value> setBlender(const Arguments& args) {
+
+    HandleScope _;
+
+    if (args.Length() == 3) {
+
+        int op      = args[0]->ToNumber()->Value(),
+            src     = args[1]->ToNumber()->Value(),
+            dest    = args[2]->ToNumber()->Value();
+
+        al_set_blender(op, src, dest);
+
+    } else if (args.Length() == 6) {
+
+        int op      = args[0]->ToNumber()->Value(),
+            src     = args[1]->ToNumber()->Value(),
+            dest    = args[2]->ToNumber()->Value(),
+            a_op    = args[3]->ToNumber()->Value(),
+            a_src   = args[4]->ToNumber()->Value(),
+            a_dest  = args[5]->ToNumber()->Value();
+            
+        al_set_separate_blender(op, src, dest, a_op, a_src, a_dest);
+
+    } else {
+
+        THROW("setBlender() requires either 3 or 6 arguments");
+    
+    }
+
+    return _.Close(Undefined());
+
+}
+
 //
 //
 
@@ -147,4 +180,5 @@ void PSTarget::init(Handle<Object> target)
     NODE_SET_METHOD(target,     "getClippingRect",      getClippingRectangle);
     NODE_SET_METHOD(target,     "setClippingRect",      setClippingRectangle);
     NODE_SET_METHOD(target,     "resetClippingRect",    resetClippingRectangle);
+    NODE_SET_METHOD(target,     "setBlender",           setBlender);
 }
