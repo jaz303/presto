@@ -2,6 +2,7 @@
 #define __PRESTO_API_H__
 
 #include <v8.h>
+#include <allegro5/allegro.h>
 
 using namespace v8;
 
@@ -9,6 +10,8 @@ using namespace v8;
 #include "display.h"
 #include "event_queue.h"
 #include "target.h"
+
+ALLEGRO_COLOR mapColor(Handle<Value> color);
 
 Handle<Value> installConstants(const Arguments& args);
 
