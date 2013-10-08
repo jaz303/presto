@@ -86,22 +86,30 @@ void PSBitmap::init(Handle<Object> target)
     Handle<ObjectTemplate> it = ft->InstanceTemplate();
     it->SetInternalFieldCount(1);
 
-    it->SetAccessor(String::New("width"), GetWidth);
-    it->SetAccessor(String::New("height"), GetHeight);
+    it->SetAccessor(String::New("width"),                       GetWidth);
+    it->SetAccessor(String::New("height"),                      GetHeight);
     
-    NODE_SET_PROTOTYPE_METHOD(ft, "save", Save);
-    NODE_SET_PROTOTYPE_METHOD(ft, "use", Use);
+    NODE_SET_PROTOTYPE_METHOD(ft, "save",                       Save);
+    NODE_SET_PROTOTYPE_METHOD(ft, "use",                        Use);
 
-    NODE_SET_PROTOTYPE_METHOD(ft, "isLocked",           IsLocked);
-    NODE_SET_PROTOTYPE_METHOD(ft, "isSubBitmap",        IsSubBitmap);
+    NODE_SET_PROTOTYPE_METHOD(ft, "isLocked",                   IsLocked);
+    NODE_SET_PROTOTYPE_METHOD(ft, "isSubBitmap",                IsSubBitmap);
 
-    NODE_SET_PROTOTYPE_METHOD(ft, "clearToColor",       ClearToColor);
-    NODE_SET_PROTOTYPE_METHOD(ft, "draw",               Draw);
-    NODE_SET_PROTOTYPE_METHOD(ft, "drawFast",           DrawFast);
-    NODE_SET_PROTOTYPE_METHOD(ft, "drawRegion",         DrawRegion);
-    NODE_SET_PROTOTYPE_METHOD(ft, "drawPixel",          DrawPixel);
-    NODE_SET_PROTOTYPE_METHOD(ft, "putPixel",           PutPixel);
-    NODE_SET_PROTOTYPE_METHOD(ft, "putBlendedPixel",    PutBlendedPixel);
+    NODE_SET_PROTOTYPE_METHOD(ft, "clearToColor",               ClearToColor);
+    NODE_SET_PROTOTYPE_METHOD(ft, "draw",                       Draw);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawFast",                   DrawFast);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawTinted",                 DrawTinted);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawRegion",                 DrawRegion);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedRegion",           DrawTintedRegion);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawPixel",                  DrawPixel);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawRotated",                DrawRotated);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedRotated",          DrawTintedRotated);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawScaledRotated",          DrawScaledRotated);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedScaledRotated",    DrawTintedScaledRotated);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawScaled",                 DrawScaled);
+    NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedScaled",           DrawTintedScaled);
+    NODE_SET_PROTOTYPE_METHOD(ft, "putPixel",                   PutPixel);
+    NODE_SET_PROTOTYPE_METHOD(ft, "putBlendedPixel",            PutBlendedPixel);
 
     PS_INIT_KEY(draw_scale,         "scale");
     PS_INIT_KEY(draw_tint,          "tint");
@@ -307,6 +315,13 @@ Handle<Value> PSBitmap::DrawFast(const Arguments &args)
     return _.Close(Undefined());
 }
 
+Handle<Value> PSBitmap::DrawTinted(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
 Handle<Value> PSBitmap::DrawRegion(const Arguments &args)
 {
     HandleScope _;
@@ -326,9 +341,58 @@ Handle<Value> PSBitmap::DrawRegion(const Arguments &args)
     return _.Close(Undefined());
 }
 
+Handle<Value> PSBitmap::DrawTintedRegion(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
 Handle<Value> PSBitmap::DrawPixel(const Arguments &args)
 {
     HandleScope _;
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSBitmap::DrawRotated(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSBitmap::DrawTintedRotated(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSBitmap::DrawScaledRotated(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSBitmap::DrawTintedScaledRotated(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSBitmap::DrawScaled(const Arguments &args)
+{
+    HandleScope _;
+
+    return _.Close(Undefined());
+}
+
+Handle<Value> PSBitmap::DrawTintedScaled(const Arguments &args)
+{
+    HandleScope _;
+
     return _.Close(Undefined());
 }
 
