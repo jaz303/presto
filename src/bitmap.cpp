@@ -202,8 +202,6 @@ Handle<Value> PSBitmap::GetHeight(Local<String> prop, const AccessorInfo &info)
 
 Handle<Value> PSBitmap::CreateSubBitmap(const Arguments& args)
 {
-    HandleScope _;
-
     UNWRAP_SELF;
     ALLEGRO_BITMAP *subBitmap = al_create_sub_bitmap(self->bitmap_,
                                                      I_ARG(0, x),
@@ -215,18 +213,11 @@ Handle<Value> PSBitmap::CreateSubBitmap(const Arguments& args)
         THROW("create sub-bitmap failed!");
     }
 
-    Local<Object> instance = tpl->InstanceTemplate()->NewInstance();
-    
-    PSBitmap *psSubBitmap = new PSBitmap(subBitmap);
-    psSubBitmap->Wrap(instance);
-    
-    return _.Close(instance);
+    return createInstance(subBitmap);
 }
 
 Handle<Value> PSBitmap::Clone(const Arguments& args)
 {
-    HandleScope _;
-
     UNWRAP_SELF;
 
     int format = (args.Length() >= 0 && args[0]->IsNumber())
@@ -245,12 +236,7 @@ Handle<Value> PSBitmap::Clone(const Arguments& args)
         THROW("clone bitmap failed!");
     }
 
-    Local<Object> instance = tpl->InstanceTemplate()->NewInstance();
-    
-    PSBitmap *psClone = new PSBitmap(clone);
-    psClone->Wrap(instance);
-    
-    return _.Close(instance);
+    return createInstance(clone);
 }
 
 //
