@@ -12,6 +12,12 @@ using namespace v8;
 #define UNWRAP_SELF_PROP \
     PSBitmap *self = node::ObjectWrap::Unwrap<PSBitmap>(info.Holder())
 
+#define F_ARG(ix, name) \
+    (args[ix]->ToNumber()->Value())
+
+#define I_ARG(ix, name) \
+    (args[ix]->ToInteger()->Value())
+
 PS_DECLARE_KEY(draw_scale);
 PS_DECLARE_KEY(draw_tint);
 PS_DECLARE_KEY(draw_rotate);
@@ -304,13 +310,8 @@ Handle<Value> PSBitmap::DrawFast(const Arguments &args)
 {
     HandleScope _;
 
-    float x     = args[0]->ToNumber()->Value(),
-          y     = args[1]->ToNumber()->Value();
-    
-    int flags   = args[2]->ToInteger()->Value();
-
     UNWRAP_SELF;
-    al_draw_bitmap(self->bitmap_, x, y, flags);
+    al_draw_bitmap(self->bitmap_, F_ARG(0, x), F_ARG(1, y), I_ARG(2, flags));
 
     return _.Close(Undefined());
 }
@@ -326,14 +327,14 @@ Handle<Value> PSBitmap::DrawRegion(const Arguments &args)
 {
     HandleScope _;
 
-    float sx    = args[0]->ToNumber()->Value(),
-          sy    = args[1]->ToNumber()->Value(),
-          sw    = args[2]->ToNumber()->Value(),
-          sh    = args[3]->ToNumber()->Value(),
-          dx    = args[4]->ToNumber()->Value(),
-          dy    = args[5]->ToNumber()->Value();
+    float sx    = F_ARG(0, _),
+          sy    = F_ARG(1, _),
+          sw    = F_ARG(2, _),
+          sh    = F_ARG(3, _),
+          dx    = F_ARG(4, _),
+          dy    = F_ARG(5, _);
 
-    int flags   = args[6]->ToInteger()->Value();
+    int flags   = I_ARG(6, _);
 
     UNWRAP_SELF;
     al_draw_bitmap_region(self->bitmap_, sx, sy, sw, sh, dx, dy, flags);
@@ -358,6 +359,15 @@ Handle<Value> PSBitmap::DrawRotated(const Arguments &args)
 {
     HandleScope _;
 
+    UNWRAP_SELF;
+    al_draw_rotated_bitmap( self->bitmap_,
+                            F_ARG(0, cx),
+                            F_ARG(1, cy),
+                            F_ARG(2, dx),
+                            F_ARG(3, dy),
+                            F_ARG(4, angle),
+                            I_ARG(5, flags) );
+
     return _.Close(Undefined());
 }
 
@@ -372,6 +382,17 @@ Handle<Value> PSBitmap::DrawScaledRotated(const Arguments &args)
 {
     HandleScope _;
 
+    UNWRAP_SELF;
+    al_draw_scaled_rotated_bitmap(  self->bitmap_,
+                                    F_ARG(0, cx),
+                                    F_ARG(1, cy),
+                                    F_ARG(2, dx),
+                                    F_ARG(3, dy),
+                                    F_ARG(4, xscale),
+                                    F_ARG(5, yscale),
+                                    F_ARG(6, angle),
+                                    I_ARG(7, flags) );
+
     return _.Close(Undefined());
 }
 
@@ -385,6 +406,18 @@ Handle<Value> PSBitmap::DrawTintedScaledRotated(const Arguments &args)
 Handle<Value> PSBitmap::DrawScaled(const Arguments &args)
 {
     HandleScope _;
+
+    UNWRAP_SELF;
+    al_draw_scaled_bitmap(  self->bitmap_,
+                            F_ARG(0, sx),
+                            F_ARG(1, sy),
+                            F_ARG(2, sw),
+                            F_ARG(3, sh),
+                            F_ARG(4, dx),
+                            F_ARG(5, dy),
+                            F_ARG(6, dw),
+                            F_ARG(7, dh),
+                            I_ARG(8, flags) );
 
     return _.Close(Undefined());
 }
