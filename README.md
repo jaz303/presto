@@ -54,7 +54,7 @@ This is what it will look like:
   * <del>Event queues</del>
   * <del>System</del>
   * <del>Display</del>
-  * Colors
+  * <del>Colors</del>
   * Graphics
   * <del>Image I/O</del>
   * Primitives
