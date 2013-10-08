@@ -9,7 +9,8 @@
         "src/event_queue.cpp",
         "src/presto.cpp",
         "src/bitmap.cpp",
-        "src/constants.cpp"
+        "src/constants.cpp",
+        "src/target.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {

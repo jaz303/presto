@@ -15,7 +15,7 @@ public:
     PSBitmap(ALLEGRO_BITMAP *bitmap);
     ~PSBitmap();
 
-    ALLEGRO_BITMAP *allegroBitmap() const;
+    inline ALLEGRO_BITMAP* allegroBitmap() const { return bitmap_; }
 
     static Persistent<FunctionTemplate> tpl;
     static void init(Handle<Object> target);
@@ -35,10 +35,6 @@ public:
     static Handle<Value> DrawPixel(const Arguments &args);
     static Handle<Value> PutPixel(const Arguments &args);
     static Handle<Value> PutBlendedPixel(const Arguments &args);
-
-    // static Handle<Value> GetClippingRectangle(const Arguments &args);
-    // static Handle<Value> SetClippingRectangle(const Arguments &args);
-    // static Handle<Value> ClearClippingRectangle(const Arguments &args);
 
 private:
     ALLEGRO_BITMAP *bitmap_;

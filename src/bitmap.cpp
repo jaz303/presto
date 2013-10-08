@@ -72,11 +72,6 @@ PSBitmap::~PSBitmap()
     al_destroy_bitmap(bitmap_);
 }
 
-ALLEGRO_BITMAP* PSBitmap::allegroBitmap() const
-{
-    return bitmap_;
-}
-
 void PSBitmap::init(Handle<Object> target)
 {
     HandleScope _;
@@ -313,30 +308,3 @@ Handle<Value> PSBitmap::PutBlendedPixel(const Arguments &args)
     HandleScope _;
     return _.Close(Undefined());
 }
-
-//
-// Clipping
-
-// Handle<Value> PSBitmap::GetClippingRectangle(const Arguments &args)
-// {
-//     HandleScope _;
-//     return _.Close(Undefined());
-// }
-
-// Handle<Value> PSBitmap::SetClippingRectangle(const Arguments &args)
-// {
-//     HandleScope _;
-//     return _.Close(Undefined());
-// }
-
-// Handle<Value> PSBitmap::ClearClippingRectangle(const Arguments &args)
-// {
-//     HandleScope _;
-
-//     int width = al_get_bitmap_width(bitmap_);
-//     int height = al_get_bitmap_height(bitmap_);
-
-//     al_set_clipping_rectangle()
-
-//     return _.Close(Undefined());
-// }

@@ -5,9 +5,10 @@
 
 using namespace v8;
 
-#include "event_queue.h"
-#include "display.h"
 #include "bitmap.h"
+#include "display.h"
+#include "event_queue.h"
+#include "target.h"
 
 Handle<Value> installConstants(const Arguments& args);
 

@@ -9,6 +9,7 @@
 
 void init(Handle<Object> target) {
 
+    PSTarget::init(target);
     PSEventQueue::init(target);
     PSDisplay::init(target);
     PSBitmap::init(target);
