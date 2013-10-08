@@ -186,6 +186,19 @@ Handle<Value> installConstants(const Arguments& args) {
     K_INT(ALPHA);
     K_INT(INVERSE_ALPHA);
 
+    // Bitmaps
+
+    K_INT(VIDEO_BITMAP);
+    K_INT(MEMORY_BITMAP);
+    K_INT(KEEP_BITMAP_FORMAT);
+    K_INT(FORCE_LOCKING);
+    K_INT(NO_PRESERVE_TEXTURE);
+    K_INT(ALPHA_TEST);
+    K_INT(MIN_LINEAR);
+    K_INT(MAG_LINEAR);
+    K_INT(MIPMAP);
+    K_INT(NO_PREMULTIPLIED_ALPHA);
+
     return _.Close(obj);
 
 }
