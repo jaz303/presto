@@ -24,6 +24,8 @@ public:
     //
     // Properties
 
+    static Handle<Value> GetFlags(Local<String> prop, const AccessorInfo &info);
+    static Handle<Value> GetFormat(Local<String> prop, const AccessorInfo &info);
     static Handle<Value> GetWidth(Local<String> prop, const AccessorInfo &info);
     static Handle<Value> GetHeight(Local<String> prop, const AccessorInfo &info);
 

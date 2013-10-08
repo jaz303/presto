@@ -92,6 +92,8 @@ void PSBitmap::init(Handle<Object> target)
     Handle<ObjectTemplate> it = ft->InstanceTemplate();
     it->SetInternalFieldCount(1);
 
+    it->SetAccessor(String::New("flags"),                       GetFlags);
+    it->SetAccessor(String::New("format"),                      GetFormat);
     it->SetAccessor(String::New("width"),                       GetWidth);
     it->SetAccessor(String::New("height"),                      GetHeight);
     
@@ -153,6 +155,20 @@ Handle<Object> PSBitmap::createInstance(ALLEGRO_BITMAP *bitmap)
 
 //
 // Properties
+
+Handle<Value> PSBitmap::GetFlags(Local<String> prop, const AccessorInfo &info)
+{
+    HandleScope _;
+    UNWRAP_SELF_PROP;
+    return _.Close(Integer::New(al_get_bitmap_flags(self->bitmap_)));
+}
+    
+Handle<Value> PSBitmap::GetFormat(Local<String> prop, const AccessorInfo &info)
+{
+    HandleScope _;
+    UNWRAP_SELF_PROP;
+    return _.Close(Integer::New(al_get_bitmap_format(self->bitmap_)));
+}
 
 Handle<Value> PSBitmap::GetWidth(Local<String> prop, const AccessorInfo &info)
 {
