@@ -97,6 +97,9 @@ void PSBitmap::init(Handle<Object> target)
     it->SetAccessor(String::New("width"),                       GetWidth);
     it->SetAccessor(String::New("height"),                      GetHeight);
     
+    NODE_SET_PROTOTYPE_METHOD(ft, "createSubBitmap",            CreateSubBitmap);
+    NODE_SET_PROTOTYPE_METHOD(ft, "clone",                      Clone);
+
     NODE_SET_PROTOTYPE_METHOD(ft, "save",                       Save);
     NODE_SET_PROTOTYPE_METHOD(ft, "use",                        Use);
 
@@ -182,6 +185,62 @@ Handle<Value> PSBitmap::GetHeight(Local<String> prop, const AccessorInfo &info)
     HandleScope _;
     UNWRAP_SELF_PROP;
     return _.Close(Integer::New(al_get_bitmap_height(self->bitmap_)));
+}
+
+//
+// Lifecycle
+
+Handle<Value> PSBitmap::CreateSubBitmap(const Arguments& args)
+{
+    HandleScope _;
+
+    UNWRAP_SELF;
+    ALLEGRO_BITMAP *subBitmap = al_create_sub_bitmap(self->bitmap_,
+                                                     I_ARG(0, x),
+                                                     I_ARG(1, y),
+                                                     I_ARG(2, w),
+                                                     I_ARG(3, h));
+
+    if (!subBitmap) {
+        THROW("create sub-bitmap failed!");
+    }
+
+    Local<Object> instance = tpl->InstanceTemplate()->NewInstance();
+    
+    PSBitmap *psSubBitmap = new PSBitmap(subBitmap);
+    psSubBitmap->Wrap(instance);
+    
+    return _.Close(instance);
+}
+
+Handle<Value> PSBitmap::Clone(const Arguments& args)
+{
+    HandleScope _;
+
+    UNWRAP_SELF;
+
+    int format = (args.Length() >= 0 && args[0]->IsNumber())
+                    ? args[0]->ToInteger()->Value()
+                    : al_get_bitmap_format(self->bitmap_);
+
+    int flags  = (args.Length() >= 1 && args[1]->IsNumber())
+                    ? args[1]->ToInteger()->Value()
+                    : al_get_bitmap_flags(self->bitmap_);
+
+    al_set_new_bitmap_format(format);
+    al_set_new_bitmap_flags(flags);
+
+    ALLEGRO_BITMAP *clone = al_clone_bitmap(self->bitmap_);
+    if (!clone) {
+        THROW("clone bitmap failed!");
+    }
+
+    Local<Object> instance = tpl->InstanceTemplate()->NewInstance();
+    
+    PSBitmap *psClone = new PSBitmap(clone);
+    psClone->Wrap(instance);
+    
+    return _.Close(instance);
 }
 
 //

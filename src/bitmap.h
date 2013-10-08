@@ -30,6 +30,12 @@ public:
     static Handle<Value> GetHeight(Local<String> prop, const AccessorInfo &info);
 
     //
+    // Lifecycle
+
+    static Handle<Value> CreateSubBitmap(const Arguments& args);
+    static Handle<Value> Clone(const Arguments& args);
+
+    //
     //
 
     static Handle<Value> Save(const Arguments& args);
