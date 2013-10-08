@@ -327,17 +327,15 @@ Handle<Value> PSBitmap::DrawRegion(const Arguments &args)
 {
     HandleScope _;
 
-    float sx    = F_ARG(0, _),
-          sy    = F_ARG(1, _),
-          sw    = F_ARG(2, _),
-          sh    = F_ARG(3, _),
-          dx    = F_ARG(4, _),
-          dy    = F_ARG(5, _);
-
-    int flags   = I_ARG(6, _);
-
     UNWRAP_SELF;
-    al_draw_bitmap_region(self->bitmap_, sx, sy, sw, sh, dx, dy, flags);
+    al_draw_bitmap_region(  self->bitmap_,
+                            F_ARG(0, sx),
+                            F_ARG(1, sy),
+                            F_ARG(2, sw),
+                            F_ARG(3, sh),
+                            F_ARG(4, dx),
+                            F_ARG(5, dy),
+                            I_ARG(6, flags) );
 
     return _.Close(Undefined());
 }
