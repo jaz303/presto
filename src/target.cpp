@@ -27,7 +27,7 @@ static Handle<Value> setTargetBitmap(const Arguments& args) {
     HandleScope _;
     
     if (!PSTarget::setTargetPSBitmap(args[0])) {
-        THROW("setTargetBitmap() requires either a PSBitmap object or null as an argument");
+        THROW("setTargetBitmap() requires either a PSBitmap instance or null as an argument");
     }
     
     return _.Close(Undefined());
@@ -134,6 +134,21 @@ static Handle<Value> setBlender(const Arguments& args) {
 
 }
 
+static Handle<Value> isBitmapCompatibleWithCurrentDisplay(const Arguments& args) {
+
+    HandleScope _;
+
+    PSBitmap *psb = node::ObjectWrap::Unwrap<PSBitmap>(args[0]->ToObject());
+    if (psb == 0) {
+        THROW("isBitmapCompatibleWithCurrentDisplay() requires a PSBitmap instance as an argument");
+    }
+
+    bool compat = al_is_compatible_bitmap(psb->allegroBitmap());
+
+    return _.Close(compat ? True() : False());
+
+}
+
 //
 //
 
@@ -175,10 +190,11 @@ void PSTarget::init(Handle<Object> target)
     PS_INIT_KEY(target_x, "width");
     PS_INIT_KEY(target_x, "height");
 
-    NODE_SET_METHOD(target,     "getTargetBitmap",      getTargetBitmap);
-    NODE_SET_METHOD(target,     "setTargetBitmap",      setTargetBitmap);
-    NODE_SET_METHOD(target,     "getClippingRect",      getClippingRectangle);
-    NODE_SET_METHOD(target,     "setClippingRect",      setClippingRectangle);
-    NODE_SET_METHOD(target,     "resetClippingRect",    resetClippingRectangle);
-    NODE_SET_METHOD(target,     "setBlender",           setBlender);
+    NODE_SET_METHOD(target, "getTargetBitmap",                      getTargetBitmap);
+    NODE_SET_METHOD(target, "setTargetBitmap",                      setTargetBitmap);
+    NODE_SET_METHOD(target, "getClippingRect",                      getClippingRectangle);
+    NODE_SET_METHOD(target, "setClippingRect",                      setClippingRectangle);
+    NODE_SET_METHOD(target, "resetClippingRect",                    resetClippingRectangle);
+    NODE_SET_METHOD(target, "setBlender",                           setBlender);
+    NODE_SET_METHOD(target, "isBitmapCompatibleWithCurrentDisplay", isBitmapCompatibleWithCurrentDisplay);
 }
