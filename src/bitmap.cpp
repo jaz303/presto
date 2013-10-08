@@ -42,9 +42,19 @@ PS_DECLARE_KEY(draw_cy);
 
 Handle<Value> createBitmap(const Arguments &args) {
 
-    HandleScope _;
+    int width   = I_ARG(0, width),
+        height  = I_ARG(1, height),
+        format  = I_ARG(2, format),
+        flags   = I_ARG(3, flags);
 
-    return _.Close(Null());
+    al_set_new_bitmap_format(format);
+    al_set_new_bitmap_flags(flags);
+
+    ALLEGRO_BITMAP *bitmap = al_create_bitmap(width, height);
+    if (!bitmap)
+        THROW("create bitmap failed!");
+
+    return PSBitmap::createInstance(bitmap);
 
 }
 
