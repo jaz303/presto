@@ -28,7 +28,7 @@ Handle<Value> installConstants(const Arguments& args) {
     K_INT(OPENGL);
     K_INT(OPENGL_3_0);
     K_INT(OPENGL_FORWARD_COMPATIBLE);
-#ifdef DIRECT3D
+#ifdef ALLEGRO_DIRECT3D
     K_INT(DIRECT3D);
 #endif
     K_INT(NOFRAME);
