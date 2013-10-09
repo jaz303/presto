@@ -55,7 +55,7 @@ This is what it will look like:
   * <del>System</del>
   * <del>Display</del>
   * <del>Colors</del>
-  * Graphics
+  * <del>Bitmaps</del>
   * <del>Image I/O</del>
   * Primitives
   * Fonts
