@@ -25,40 +25,38 @@ static Handle<Value> getTargetBitmap(const Arguments& args) {
 
 static Handle<Value> setTargetBitmap(const Arguments& args) {
 
-    HandleScope _;
-    
     if (!PSTarget::setTargetPSBitmap(args[0])) {
         THROW("setTargetBitmap() requires either a PSBitmap instance or null as an argument");
     }
     
-    return _.Close(Undefined());
+    return UNDEFINED();
 
 }
 
 static Handle<Value> clearToColor(const Arguments& args) {
     al_clear_to_color(mapColor(args[0]));
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }
 
 static Handle<Value> drawPixel(const Arguments& args) {
     al_draw_pixel(  F_ARG(0, x),
                     F_ARG(1, y),
                     C_ARG(2, color) );
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }
 
 static Handle<Value> putPixel(const Arguments& args) {
     al_put_pixel(   I_ARG(0, x),
                     I_ARG(1, y),
                     C_ARG(2, color) );
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }
 
 static Handle<Value> putBlendedPixel(const Arguments& args) {
     al_put_blended_pixel(   I_ARG(0, x),
                             I_ARG(1, y),
                             C_ARG(2, color) );
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }
 
 static Handle<Value> getClippingRectangle(const Arguments& args) {
@@ -172,7 +170,7 @@ static Handle<Value> isBitmapCompatibleWithCurrentDisplay(const Arguments& args)
 
     bool compat = al_is_compatible_bitmap(psb->allegroBitmap());
 
-    return _.Close(compat ? True() : False());
+    return BOOL(compat);
 
 }
 

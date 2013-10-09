@@ -334,7 +334,7 @@ Handle<Value> PSDisplay::Destroy(const Arguments& args)
 {
     UNWRAP_SELF;
     self->destroy();
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }
 
 void PSDisplay::destroy()

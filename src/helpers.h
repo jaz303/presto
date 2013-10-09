@@ -19,4 +19,10 @@
 #define C_ARG(ix, name) \
     (mapColor(args[ix]))
 
+#define UNDEFINED() \
+    (HandleScope().Close(Undefined()))
+
+#define BOOL(exp) \
+    (HandleScope().Close((exp) ? True() : False()))
+
 #endif

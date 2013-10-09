@@ -252,7 +252,7 @@ Handle<Value> PSBitmap::Save(const Arguments& args)
 Handle<Value> PSBitmap::Use(const Arguments& args)
 {
     PSTarget::setTargetPSBitmap(args.This());
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }
 
 Handle<Value> PSBitmap::IsLocked(const Arguments& args)
@@ -536,5 +536,5 @@ Handle<Value> PSBitmap::ConvertMaskToAlpha(const Arguments &args)
 
     al_convert_mask_to_alpha(self->bitmap_, color);
 
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 }

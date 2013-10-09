@@ -40,7 +40,7 @@ Handle<Value> run(const Arguments& args) {
 
     if (args.Length() == 0 || !args[0]->IsFunction()) {
         std::cerr << "error: presto_bindings.run() requires a function as its first argument" << std::endl;
-        return HandleScope().Close(Undefined());
+        return UNDEFINED();
     }
 
     s_entryPoint = Persistent<Function>(Handle<Function>::Cast(args[0]));
@@ -56,7 +56,7 @@ Handle<Value> run(const Arguments& args) {
     s_context.Dispose();
     s_entryPoint.Dispose();
 
-    return HandleScope().Close(Undefined());
+    return UNDEFINED();
 
 }
 
