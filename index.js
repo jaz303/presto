@@ -1,6 +1,9 @@
 var bindings    = require("bindings")("presto_bindings.node"),
     k           = bindings.installConstants({});
 
+//
+// Init/loop
+
 function installSubSystems(systems) {
 
     if (bindings.ps_install() === false)
@@ -118,6 +121,13 @@ function init() {
     
 }
 
+exports.constants           = k;
+exports.init                = init;
+exports.createContext       = createContext;
+
+//
+// Display
+
 function createDisplay(width, height, opts) {
 
     opts = opts || {};
@@ -157,16 +167,6 @@ function createDisplay(width, height, opts) {
 
 }
 
-//
-//
-
-exports.constants           = k;
-exports.init                = init;
-exports.createContext       = createContext;
-
-//
-// Display
-
 exports.createDisplay       = createDisplay;
 exports.inhibitScreensaver  = bindings.inhibitScreensaver;
 
@@ -178,4 +178,50 @@ exports.createEventQueue    = bindings.createEventQueue;
 //
 // Bitmaps
 
+function createBitmap(width, height, format, flags) {
+
+    function parseCreateBitmapOptions(opts) {
+        format = ('format' in opts) ? parseInt(opts.format, 10) : undefined;
+        flags =  ('flags' in opts)  ? parseInt(opts.flags, 10)  : undefined;
+    }
+
+    if (typeof format === 'object') {
+        parseCreateBitmapOptions(format);
+    }
+
+    if (typeof format !== 'number')
+        format = k.PIXEL_FORMAT_ANY;
+
+    if (typeof flags !== 'number')
+        flags = k.VIDEO_BITMAP;
+
+    return bindings.createBitmap(width, height, format, flags);
+
+}
+
+exports.createBitmap        = createBitmap;
 exports.loadBitmap          = bindings.loadBitmap;
+
+//
+// Colors
+
+function rgb(r, g, b) {
+    return (0xFF << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
+}
+
+function rgbf(r, g, b) {
+    return {r: r, g: g, b: b};
+}
+
+function rgba(r, g, b, a) {
+    return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
+}
+
+function rgbaf(r, g, b, a) {
+    return {r: r, g: g, b: b, a: a};
+}
+
+exports.rgb                 = rgb;
+exports.rgba                = rgba;
+exports.rgbf                = rgbf;
+exports.rgbaf               = rgbaf;
