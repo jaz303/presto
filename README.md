@@ -68,10 +68,12 @@ This is what it will look like:
 
 ## Cut Corners
 
-I've skipped implementing some tedious stuff that's not immediately useful to me:
+I've skipped implementing some stuff that's not immediately useful to me. None of this is hard to implement, just tedious:
 
   * `al_set_new_display_option()` and associated constants
   * `as_set_new_display_refresh_rate()`
+  * `al_get_current_display()`
+  * `al_lock_bitmap()`, `al_lock_bitmap_region()`, `al_unlock_bitmap()`
   * A few of the display flags are not recognised at the JS wrapper level: `ALLEGRO_OPENGL_3_0`, `ALLEGRO_OPENGL_FORWARD_COMPATIBLE`, `ALLEGRO_GENERATE_EXPOSE_EVENTS`
   * Enumeration and interrogation of available display modes
   * There are a lot of missing constants
