@@ -20,19 +20,19 @@ ALLEGRO_COLOR mapColor(Handle<Value> color) {
     
     if (color->IsNumber()) {
         
-        uint32_t argb = color->ToUint32()->Value();
+        uint32_t argb = color->Uint32Value();
         return al_map_rgba(argb >> 16, argb >> 8, argb, argb >> 24);
    
     } else if (color->IsObject()) {
         
         Handle<Object> co = Handle<Object>::Cast(color);
 
-        float r = co->Get(key_color_red)->ToNumber()->Value(),
-              g = co->Get(key_color_green)->ToNumber()->Value(),
-              b = co->Get(key_color_blue)->ToNumber()->Value();
+        float r = co->Get(key_color_red)->NumberValue(),
+              g = co->Get(key_color_green)->NumberValue(),
+              b = co->Get(key_color_blue)->NumberValue();
 
         float a = co->Has(key_color_alpha)
-                    ? co->Get(key_color_alpha)->ToNumber()->Value()
+                    ? co->Get(key_color_alpha)->NumberValue()
                     : 1.0f;
 
         return al_map_rgba_f(r, g, b, a);
