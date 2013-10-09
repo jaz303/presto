@@ -279,8 +279,8 @@ Handle<Value> PSBitmap::Draw(const Arguments &args)
 
     Handle<Object> opts = args[0]->ToObject();
 
-    float dx = opts->Get(key_draw_dx)->ToNumber()->Value();
-    float dy = opts->Get(key_draw_dy)->ToNumber()->Value();
+    float dx = opts->Get(key_draw_dx)->NumberValue();
+    float dy = opts->Get(key_draw_dy)->NumberValue();
 
     float cx, cy;
     float dw, dh, sx, sy, sw, sh;
@@ -295,35 +295,35 @@ Handle<Value> PSBitmap::Draw(const Arguments &args)
 
     if (opts->Has(key_draw_rotate)) {
         rotating = true;
-        angle = opts->Get(key_draw_rotate)->ToNumber()->Value();
-        cx = opts->Get(key_draw_cx)->ToNumber()->Value();
-        cy = opts->Get(key_draw_cy)->ToNumber()->Value();
+        angle = opts->Get(key_draw_rotate)->NumberValue();
+        cx = opts->Get(key_draw_cx)->NumberValue();
+        cy = opts->Get(key_draw_cy)->NumberValue();
         if (opts->Has(key_draw_scale)) {
             scaling = true;
             Handle<Value> scale = opts->Get(key_draw_scale);
             if (scale->IsNumber()) {
-                xscale = yscale = Handle<Number>::Cast((scale))->Value();
+                xscale = yscale = scale->NumberValue();
             } else {
-                Handle<Object> scaleObj = scale->ToObject();
-                xscale = scaleObj->Get(key_draw_x)->ToNumber()->Value();
-                yscale = scaleObj->Get(key_draw_y)->ToNumber()->Value();
+                Handle<Object> scaleObj = Handle<Object>::Cast(scale);
+                xscale = scaleObj->Get(key_draw_x)->NumberValue();
+                yscale = scaleObj->Get(key_draw_y)->NumberValue();
             }
         }
     } else if (opts->Has(key_draw_sx)) {
         
         scaling = true;
         
-        sx = opts->Get(key_draw_sx)->ToNumber()->Value();
-        sy = opts->Get(key_draw_sy)->ToNumber()->Value();
-        sw = opts->Get(key_draw_sw)->ToNumber()->Value();
-        sh = opts->Get(key_draw_sh)->ToNumber()->Value();
+        sx = opts->Get(key_draw_sx)->NumberValue();
+        sy = opts->Get(key_draw_sy)->NumberValue();
+        sw = opts->Get(key_draw_sw)->NumberValue();
+        sh = opts->Get(key_draw_sh)->NumberValue();
 
-        dw = opts->Has(key_draw_dw) ? opts->Get(key_draw_dw)->ToNumber()->Value() : sw;
-        dh = opts->Has(key_draw_dh) ? opts->Get(key_draw_dh)->ToNumber()->Value() : sh;
+        dw = opts->Has(key_draw_dw) ? opts->Get(key_draw_dw)->NumberValue() : sw;
+        dh = opts->Has(key_draw_dh) ? opts->Get(key_draw_dh)->NumberValue() : sh;
 
     }
 
-    int flags = opts->Get(key_draw_flags)->ToInteger()->Value();
+    int flags = opts->Get(key_draw_flags)->IntegerValue();
 
     UNWRAP_SELF;
 

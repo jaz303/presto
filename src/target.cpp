@@ -87,17 +87,17 @@ static Handle<Value> setClippingRectangle(const Arguments& args) {
 
         Handle<Object> obj = args[0]->ToObject();
 
-        x = obj->Get(key_target_x)->ToNumber()->Value();
-        y = obj->Get(key_target_y)->ToNumber()->Value();
-        w = obj->Get(key_target_width)->ToNumber()->Value();
-        h = obj->Get(key_target_height)->ToNumber()->Value();
+        x = obj->Get(key_target_x)->NumberValue();
+        y = obj->Get(key_target_y)->NumberValue();
+        w = obj->Get(key_target_width)->NumberValue();
+        h = obj->Get(key_target_height)->NumberValue();
 
     } else if (args.Length() == 4) {
 
-        x = args[0]->ToNumber()->Value();
-        y = args[1]->ToNumber()->Value();
-        w = args[2]->ToNumber()->Value();
-        h = args[3]->ToNumber()->Value();
+        x = args[0]->NumberValue();
+        y = args[1]->NumberValue();
+        w = args[2]->NumberValue();
+        h = args[3]->NumberValue();
 
     } else {
 
@@ -132,20 +132,20 @@ static Handle<Value> setBlender(const Arguments& args) {
 
     if (args.Length() == 3) {
 
-        int op      = args[0]->ToNumber()->Value(),
-            src     = args[1]->ToNumber()->Value(),
-            dest    = args[2]->ToNumber()->Value();
+        int op      = args[0]->NumberValue(),
+            src     = args[1]->NumberValue(),
+            dest    = args[2]->NumberValue();
 
         al_set_blender(op, src, dest);
 
     } else if (args.Length() == 6) {
 
-        int op      = args[0]->ToNumber()->Value(),
-            src     = args[1]->ToNumber()->Value(),
-            dest    = args[2]->ToNumber()->Value(),
-            a_op    = args[3]->ToNumber()->Value(),
-            a_src   = args[4]->ToNumber()->Value(),
-            a_dest  = args[5]->ToNumber()->Value();
+        int op      = args[0]->NumberValue(),
+            src     = args[1]->NumberValue(),
+            dest    = args[2]->NumberValue(),
+            a_op    = args[3]->NumberValue(),
+            a_src   = args[4]->NumberValue(),
+            a_dest  = args[5]->NumberValue();
             
         al_set_separate_blender(op, src, dest, a_op, a_src, a_dest);
 

@@ -11,10 +11,10 @@
     key_##name = Persistent<String>::New(String::New(value))
 
 #define F_ARG(ix, name) \
-    (args[ix]->ToNumber()->Value())
+    (args[ix]->NumberValue())
 
 #define I_ARG(ix, name) \
-    (args[ix]->ToInteger()->Value())
+    (args[ix]->IntegerValue())
 
 #define C_ARG(ix, name) \
     (mapColor(args[ix]))

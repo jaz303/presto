@@ -20,16 +20,16 @@ struct {
 
 Handle<Value> createDisplay(const Arguments &args) {
 
-    int width = args[0]->ToInteger()->Value();
-    int height = args[1]->ToInteger()->Value();
-    int flags = args[2]->ToInteger()->Value();
+    int width = args[0]->IntegerValue();
+    int height = args[1]->IntegerValue();
+    int flags = args[2]->IntegerValue();
 
     int x = INT_MAX;
     int y = INT_MAX;
 
     if (args.Length() >= 5) {
-        x = args[3]->ToInteger()->Value();
-        y = args[4]->ToInteger()->Value();
+        x = args[3]->IntegerValue();
+        y = args[4]->IntegerValue();
     }
 
     HandleScope _;
@@ -76,7 +76,7 @@ void unmapDisplay(ALLEGRO_DISPLAY *display) {
 
 Handle<Value> inhibitScreensaver(const Arguments &args) {
     HandleScope _;
-    bool inhibit = (args.Length() == 0) || args[0]->ToBoolean()->IsTrue();
+    bool inhibit = (args.Length() == 0) || args[0]->BooleanValue();
     return _.Close(al_inhibit_screensaver(inhibit) ? True() : False());
 }
 
@@ -231,8 +231,8 @@ Handle<Value> PSDisplay::SetPosition(const Arguments& args)
     if (args.Length() < 2)
         THROW("PSDisplay.setPosition() requires two arguments");
 
-    int x = args[0]->ToInteger()->Value(),
-        y = args[1]->ToInteger()->Value();
+    int x = args[0]->IntegerValue(),
+        y = args[1]->IntegerValue();
 
     UNWRAP_SELF;
     al_set_window_position(self->display_, x, y);
@@ -260,7 +260,7 @@ Handle<Value> PSDisplay::SetFullscreen(const Arguments& args)
     bool fullScreen = true;
 
     if (args.Length() > 0) {
-        fullScreen = args[0]->ToBoolean()->Value();
+        fullScreen = args[0]->BooleanValue();
     }
 
     UNWRAP_SELF;
@@ -276,7 +276,7 @@ Handle<Value> PSDisplay::SetNoFrame(const Arguments& args)
     bool noFrame = true;
 
     if (args.Length() > 0) {
-        noFrame = args[0]->ToBoolean()->Value();
+        noFrame = args[0]->BooleanValue();
     }
 
     UNWRAP_SELF;
@@ -320,8 +320,8 @@ Handle<Value> PSDisplay::Resize(const Arguments& args)
     if (args.Length() < 2)
         THROW("PSDisplay.resize() requires two arguments");
 
-    int width   = args[0]->ToInteger()->Value(),
-        height  = args[1]->ToInteger()->Value();
+    int width   = args[0]->IntegerValue(),
+        height  = args[1]->IntegerValue();
 
     if (width <= 0 || height <= 0)
         THROW("arguments to PSDisplay.resize() must be positive integers");
