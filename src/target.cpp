@@ -174,6 +174,35 @@ static Handle<Value> isBitmapCompatibleWithCurrentDisplay(const Arguments& args)
 
 }
 
+static Handle<Value> deferDrawing(const Arguments& args) {
+
+    if (args[0]->IsFunction()) {
+
+        HandleScope _;
+
+        bool drawingWasHeld = al_is_bitmap_drawing_held();
+        al_hold_bitmap_drawing(true);
+
+        Handle<Function> fun = Handle<Function>::Cast(args[0]);
+        Handle<Value> args[0];
+
+        TryCatch trycatch;
+        Handle<Value> ret = fun->Call(Context::GetCurrent()->Global(), 0, args);
+
+        al_hold_bitmap_drawing(drawingWasHeld);
+
+        if (ret.IsEmpty()) {
+            return trycatch.ReThrow();
+        }
+
+    } else {
+        al_hold_bitmap_drawing(args[0]->BooleanValue());
+    }
+
+    return UNDEFINED();
+
+}
+
 //
 //
 
@@ -226,4 +255,5 @@ void PSTarget::init(Handle<Object> target)
     NODE_SET_METHOD(target, "resetClippingRect",                    resetClippingRectangle);
     NODE_SET_METHOD(target, "setBlender",                           setBlender);
     NODE_SET_METHOD(target, "isBitmapCompatibleWithCurrentDisplay", isBitmapCompatibleWithCurrentDisplay);
+    NODE_SET_METHOD(target, "deferDrawing",                         deferDrawing);
 }
