@@ -10,4 +10,13 @@
 #define PS_INIT_KEY(name, value) \
     key_##name = Persistent<String>::New(String::New(value))
 
+#define F_ARG(ix, name) \
+    (args[ix]->ToNumber()->Value())
+
+#define I_ARG(ix, name) \
+    (args[ix]->ToInteger()->Value())
+
+#define C_ARG(ix, name) \
+    (mapColor(args[ix]))
+
 #endif

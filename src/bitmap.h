@@ -47,22 +47,18 @@ public:
     //
     // Drawing
 
-    static Handle<Value> ClearToColor(const Arguments &args);
     static Handle<Value> Draw(const Arguments &args);
     static Handle<Value> DrawFast(const Arguments &args);
     static Handle<Value> DrawTinted(const Arguments &args);
     static Handle<Value> DrawRegion(const Arguments &args);
     static Handle<Value> DrawTintedRegion(const Arguments &args);
-    static Handle<Value> DrawPixel(const Arguments &args);
     static Handle<Value> DrawRotated(const Arguments &args);
     static Handle<Value> DrawTintedRotated(const Arguments &args);
     static Handle<Value> DrawScaledRotated(const Arguments &args);
     static Handle<Value> DrawTintedScaledRotated(const Arguments &args);
     static Handle<Value> DrawScaled(const Arguments &args);
     static Handle<Value> DrawTintedScaled(const Arguments &args);
-    static Handle<Value> PutPixel(const Arguments &args);
-    static Handle<Value> PutBlendedPixel(const Arguments &args);
-
+    
     //
     // Alpha
 

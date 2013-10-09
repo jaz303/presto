@@ -1,6 +1,7 @@
 #include "bitmap.h"
 #include "helpers.h"
 #include "target.h"
+#include "api.h"
 #include <v8.h>
 #include <allegro5/allegro.h>
 
@@ -11,12 +12,6 @@ using namespace v8;
 
 #define UNWRAP_SELF_PROP \
     PSBitmap *self = node::ObjectWrap::Unwrap<PSBitmap>(info.Holder())
-
-#define F_ARG(ix, name) \
-    (args[ix]->ToNumber()->Value())
-
-#define I_ARG(ix, name) \
-    (args[ix]->ToInteger()->Value())
 
 PS_DECLARE_KEY(draw_scale);
 PS_DECLARE_KEY(draw_tint);
@@ -116,21 +111,19 @@ void PSBitmap::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "isLocked",                   IsLocked);
     NODE_SET_PROTOTYPE_METHOD(ft, "isSubBitmap",                IsSubBitmap);
 
-    NODE_SET_PROTOTYPE_METHOD(ft, "clearToColor",               ClearToColor);
     NODE_SET_PROTOTYPE_METHOD(ft, "draw",                       Draw);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawFast",                   DrawFast);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawTinted",                 DrawTinted);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawRegion",                 DrawRegion);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedRegion",           DrawTintedRegion);
-    NODE_SET_PROTOTYPE_METHOD(ft, "drawPixel",                  DrawPixel);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawRotated",                DrawRotated);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedRotated",          DrawTintedRotated);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawScaledRotated",          DrawScaledRotated);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedScaledRotated",    DrawTintedScaledRotated);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawScaled",                 DrawScaled);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawTintedScaled",           DrawTintedScaled);
-    NODE_SET_PROTOTYPE_METHOD(ft, "putPixel",                   PutPixel);
-    NODE_SET_PROTOTYPE_METHOD(ft, "putBlendedPixel",            PutBlendedPixel);
+    
+    NODE_SET_PROTOTYPE_METHOD(ft, "convertMaskToAlpha",         ConvertMaskToAlpha);
 
     PS_INIT_KEY(draw_scale,         "scale");
     PS_INIT_KEY(draw_tint,          "tint");
@@ -277,12 +270,6 @@ Handle<Value> PSBitmap::IsSubBitmap(const Arguments& args)
 //
 // Drawing
 
-Handle<Value> PSBitmap::ClearToColor(const Arguments &args)
-{
-    HandleScope _;
-    return _.Close(Undefined());
-}
-
 Handle<Value> PSBitmap::Draw(const Arguments &args)
 {
     HandleScope _;
@@ -300,10 +287,11 @@ Handle<Value> PSBitmap::Draw(const Arguments &args)
     float dw, dh, sx, sy, sw, sh;
     float xscale, yscale;
     float angle;
+    ALLEGRO_COLOR color;
 
     if (opts->Has(key_draw_tint)) {
         tinting = true;
-        // TODO: extract color
+        color = mapColor(opts->Get(key_draw_tint));
     }
 
     if (opts->Has(key_draw_rotate)) {
@@ -349,11 +337,9 @@ Handle<Value> PSBitmap::Draw(const Arguments &args)
             }
         } else {
             if (!rotating) {
-                // TODO: colors
-                // al_draw_tinted_bitmap(self->bitmap_, ..., x, y, flags);
+                al_draw_tinted_bitmap(self->bitmap_, color, dx, dy, flags);
             } else {
-                // TODO: colors
-                // al_draw_tinted_rotated_bitmap(self->bitmap_, ... cx, cy, x, y, angle, flags);
+                al_draw_tinted_rotated_bitmap(self->bitmap_, color, cx, cy, dx, dy, angle, flags);
             }
         }
     } else {
@@ -365,11 +351,9 @@ Handle<Value> PSBitmap::Draw(const Arguments &args)
             }
         } else {
             if (!rotating) {
-                // TODO: colors
-                // al_draw_tinted_scaled_bitmap(self->bitmap_, ..., sx, sy, sw, sh, dx, dy, dw, dh, flags);
+                al_draw_tinted_scaled_bitmap(self->bitmap_, color, sx, sy, sw, sh, dx, dy, dw, dh, flags);
             } else {
-                // TODO: colors
-                // al_draw_tinted_scaled_rotated_bitmap(self->bitmap_, ..., cx, cy, dx, dy, xscale, yscale, angle, flags);
+                al_draw_tinted_scaled_rotated_bitmap(self->bitmap_, color, cx, cy, dx, dy, xscale, yscale, angle, flags);
             }
         }
     }
@@ -390,6 +374,13 @@ Handle<Value> PSBitmap::DrawFast(const Arguments &args)
 Handle<Value> PSBitmap::DrawTinted(const Arguments &args)
 {
     HandleScope _;
+
+    UNWRAP_SELF;
+    al_draw_tinted_bitmap(  self->bitmap_,
+                            C_ARG(0, tint),
+                            F_ARG(1, dx),
+                            F_ARG(2, dy),
+                            I_ARG(3, flags) );
 
     return _.Close(Undefined());
 }
@@ -415,12 +406,17 @@ Handle<Value> PSBitmap::DrawTintedRegion(const Arguments &args)
 {
     HandleScope _;
 
-    return _.Close(Undefined());
-}
+    UNWRAP_SELF;
+    al_draw_tinted_bitmap_region(   self->bitmap_,
+                                    C_ARG(0, tint),
+                                    F_ARG(1, sx),
+                                    F_ARG(2, sy),
+                                    F_ARG(3, sw),
+                                    F_ARG(4, sh),
+                                    F_ARG(5, dx),
+                                    F_ARG(6, dy),
+                                    I_ARG(7, flags) );
 
-Handle<Value> PSBitmap::DrawPixel(const Arguments &args)
-{
-    HandleScope _;
     return _.Close(Undefined());
 }
 
@@ -443,6 +439,16 @@ Handle<Value> PSBitmap::DrawRotated(const Arguments &args)
 Handle<Value> PSBitmap::DrawTintedRotated(const Arguments &args)
 {
     HandleScope _;
+
+    UNWRAP_SELF;
+    al_draw_tinted_rotated_bitmap(  self->bitmap_,
+                                    C_ARG(0, tint),
+                                    F_ARG(1, cx),
+                                    F_ARG(2, cy),
+                                    F_ARG(3, dx),
+                                    F_ARG(4, dy),
+                                    F_ARG(5, angle),
+                                    I_ARG(6, flags) );
 
     return _.Close(Undefined());
 }
@@ -468,6 +474,18 @@ Handle<Value> PSBitmap::DrawScaledRotated(const Arguments &args)
 Handle<Value> PSBitmap::DrawTintedScaledRotated(const Arguments &args)
 {
     HandleScope _;
+
+    UNWRAP_SELF;
+    al_draw_tinted_scaled_rotated_bitmap(   self->bitmap_,
+                                            C_ARG(0, tint),
+                                            F_ARG(1, cx),
+                                            F_ARG(2, cy),
+                                            F_ARG(3, dx),
+                                            F_ARG(4, dy),
+                                            F_ARG(5, xscale),
+                                            F_ARG(6, yscale),
+                                            F_ARG(7, angle),
+                                            I_ARG(8, flags) );
 
     return _.Close(Undefined());
 }
@@ -495,17 +513,28 @@ Handle<Value> PSBitmap::DrawTintedScaled(const Arguments &args)
 {
     HandleScope _;
 
+    UNWRAP_SELF;
+    al_draw_tinted_scaled_bitmap(   self->bitmap_,
+                                    C_ARG(0, tint),
+                                    F_ARG(1, sx),
+                                    F_ARG(2, sy),
+                                    F_ARG(3, sw),
+                                    F_ARG(4, sh),
+                                    F_ARG(5, dx),
+                                    F_ARG(6, dy),
+                                    F_ARG(7, dw),
+                                    F_ARG(8, dh),
+                                    I_ARG(9, flags) );
+
     return _.Close(Undefined());
 }
 
-Handle<Value> PSBitmap::PutPixel(const Arguments &args)
+Handle<Value> PSBitmap::ConvertMaskToAlpha(const Arguments &args)
 {
-    HandleScope _;
-    return _.Close(Undefined());
-}
+    UNWRAP_SELF;
+    ALLEGRO_COLOR color = mapColor(args[0]);
 
-Handle<Value> PSBitmap::PutBlendedPixel(const Arguments &args)
-{
-    HandleScope _;
-    return _.Close(Undefined());
+    al_convert_mask_to_alpha(self->bitmap_, color);
+
+    return HandleScope().Close(Undefined());
 }

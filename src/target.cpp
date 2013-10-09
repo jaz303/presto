@@ -1,6 +1,7 @@
 #include "target.h"
 #include "helpers.h"
 #include "bitmap.h"
+#include "api.h"
 
 #include <v8.h>
 #include <node.h>
@@ -32,6 +33,32 @@ static Handle<Value> setTargetBitmap(const Arguments& args) {
     
     return _.Close(Undefined());
 
+}
+
+static Handle<Value> clearToColor(const Arguments& args) {
+    al_clear_to_color(mapColor(args[0]));
+    return HandleScope().Close(Undefined());
+}
+
+static Handle<Value> drawPixel(const Arguments& args) {
+    al_draw_pixel(  F_ARG(0, x),
+                    F_ARG(1, y),
+                    C_ARG(2, color) );
+    return HandleScope().Close(Undefined());
+}
+
+static Handle<Value> putPixel(const Arguments& args) {
+    al_put_pixel(   I_ARG(0, x),
+                    I_ARG(1, y),
+                    C_ARG(2, color) );
+    return HandleScope().Close(Undefined());
+}
+
+static Handle<Value> putBlendedPixel(const Arguments& args) {
+    al_put_blended_pixel(   I_ARG(0, x),
+                            I_ARG(1, y),
+                            C_ARG(2, color) );
+    return HandleScope().Close(Undefined());
 }
 
 static Handle<Value> getClippingRectangle(const Arguments& args) {
@@ -192,6 +219,10 @@ void PSTarget::init(Handle<Object> target)
 
     NODE_SET_METHOD(target, "getTargetBitmap",                      getTargetBitmap);
     NODE_SET_METHOD(target, "setTargetBitmap",                      setTargetBitmap);
+    NODE_SET_METHOD(target, "clearToColor",                         clearToColor);
+    NODE_SET_METHOD(target, "drawPixel",                            drawPixel);
+    NODE_SET_METHOD(target, "putPixel",                             putPixel);
+    NODE_SET_METHOD(target, "putBlendedPixel",                      putBlendedPixel);
     NODE_SET_METHOD(target, "getClippingRect",                      getClippingRectangle);
     NODE_SET_METHOD(target, "setClippingRect",                      setClippingRectangle);
     NODE_SET_METHOD(target, "resetClippingRect",                    resetClippingRectangle);
