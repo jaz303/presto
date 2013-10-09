@@ -45,6 +45,34 @@ ALLEGRO_COLOR mapColor(Handle<Value> color) {
 
 }
 
+Handle<Value> unmapColor(ALLEGRO_COLOR color, bool returnObject) {
+
+    HandleScope _;
+
+    if (returnObject) {
+
+        float r, g, b, a;
+        al_unmap_rgba_f(color, &r, &g, &b, &a);
+
+        Local<Object> colorObj = Object::New();
+        colorObj->Set(key_color_red, Number::New(r));
+        colorObj->Set(key_color_green, Number::New(g));
+        colorObj->Set(key_color_blue, Number::New(b));
+        colorObj->Set(key_color_alpha, Number::New(a));
+
+        return _.Close(colorObj);
+
+    } else {
+
+        unsigned char r, g, b, a;
+        al_unmap_rgba(color, &r, &g, &b, &a);
+
+        return _.Close(Integer::NewFromUnsigned(a << 24 | r << 16 | g << 8 | b));
+
+    }
+
+}
+
 #define EXPOSE_SUBYSTEM(name) \
     NODE_SET_METHOD(target, "ps_install_" #name, ps_install_##name); \
     NODE_SET_METHOD(target, "ps_uninstall_" #name, ps_uninstall_##name);

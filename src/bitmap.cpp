@@ -110,6 +110,9 @@ void PSBitmap::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "isLocked",                   IsLocked);
     NODE_SET_PROTOTYPE_METHOD(ft, "isSubBitmap",                IsSubBitmap);
 
+    NODE_SET_PROTOTYPE_METHOD(ft, "getPixel",                   GetPixel);
+    NODE_SET_PROTOTYPE_METHOD(ft, "getPixelF",                  GetPixelF);
+
     NODE_SET_PROTOTYPE_METHOD(ft, "draw",                       Draw);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawFast",                   DrawFast);
     NODE_SET_PROTOTYPE_METHOD(ft, "drawTinted",                 DrawTinted);
@@ -264,6 +267,20 @@ Handle<Value> PSBitmap::IsSubBitmap(const Arguments& args)
 {
     UNWRAP_SELF;
     return HandleScope().Close(al_is_sub_bitmap(self->bitmap_) ? True() : False());
+}
+
+Handle<Value> PSBitmap::GetPixel(const Arguments& args)
+{
+    HandleScope _;
+    UNWRAP_SELF;
+    return unmapColor(al_get_pixel(self->bitmap_, I_ARG(0, x), I_ARG(1, y)), false);
+}
+
+Handle<Value> PSBitmap::GetPixelF(const Arguments& args)
+{
+    HandleScope _;
+    UNWRAP_SELF;
+    return unmapColor(al_get_pixel(self->bitmap_, I_ARG(0, x), I_ARG(1, y)), true);
 }
 
 //

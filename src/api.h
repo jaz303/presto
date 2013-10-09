@@ -12,6 +12,7 @@ using namespace v8;
 #include "target.h"
 
 ALLEGRO_COLOR mapColor(Handle<Value> color);
+Handle<Value> unmapColor(ALLEGRO_COLOR color, bool returnObject);
 
 Handle<Value> installConstants(const Arguments& args);
 

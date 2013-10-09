@@ -44,6 +44,9 @@ public:
     static Handle<Value> IsLocked(const Arguments& args);
     static Handle<Value> IsSubBitmap(const Arguments& args);
 
+    static Handle<Value> GetPixel(const Arguments& args);
+    static Handle<Value> GetPixelF(const Arguments& args);
+
     //
     // Drawing
 
