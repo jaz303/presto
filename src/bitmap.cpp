@@ -59,13 +59,12 @@ Handle<Value> loadBitmap(const Arguments &args) {
         THROW("loadBitmap() requires one argument");
 
     const char *filename = *String::AsciiValue(args[0]);
+    
     ALLEGRO_BITMAP *bitmap = al_load_bitmap(filename);
+    if (!bitmap)
+        THROW("load bitmap failed!");
 
-    if (bitmap) {
-        return PSBitmap::createInstance(bitmap);
-    } else {
-        return HandleScope().Close(Null());    
-    }
+    return PSBitmap::createInstance(bitmap);
 
 }
 
