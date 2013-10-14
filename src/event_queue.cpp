@@ -76,8 +76,8 @@ void PSEventQueue::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "waitForEventUntil", WaitForEventUntil);
 
     PSEventQueue::tpl = Persistent<FunctionTemplate>::New(ft);
-    
-    PS_INIT_KEY(ev_x, "type");
+
+    PS_INIT_KEY(ev_type, "type");
     PS_INIT_KEY(ev_x, "x");
     PS_INIT_KEY(ev_y, "y");
     PS_INIT_KEY(ev_z, "z");
@@ -102,6 +102,7 @@ void PSEventQueue::init(Handle<Object> target)
     PS_INIT_KEY(ev_controlKey, "controlKey");
     PS_INIT_KEY(ev_altKey, "altKey");
     PS_INIT_KEY(ev_display, "display");
+
 }
 
 Handle<Value> PSEventQueue::createInstance()
