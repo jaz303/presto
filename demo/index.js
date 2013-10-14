@@ -50,7 +50,7 @@ game.on('tick', function(delta) {
 
     display.use();
 
-    ps.clearToColor(ps.rgbf(0,0,0));
+    ps.clear(ps.rgbf(0,0,0));
 
     frame++;
     var ix = (Math.floor(frame / 5)) % 8;

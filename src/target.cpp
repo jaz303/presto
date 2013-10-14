@@ -33,7 +33,7 @@ static Handle<Value> setTargetBitmap(const Arguments& args) {
 
 }
 
-static Handle<Value> clearToColor(const Arguments& args) {
+static Handle<Value> clear(const Arguments& args) {
     al_clear_to_color(mapColor(args[0]));
     return UNDEFINED();
 }
@@ -246,7 +246,7 @@ void PSTarget::init(Handle<Object> target)
 
     NODE_SET_METHOD(target, "getTargetBitmap",                      getTargetBitmap);
     NODE_SET_METHOD(target, "setTargetBitmap",                      setTargetBitmap);
-    NODE_SET_METHOD(target, "clearToColor",                         clearToColor);
+    NODE_SET_METHOD(target, "clear",                                clear);
     NODE_SET_METHOD(target, "drawPixel",                            drawPixel);
     NODE_SET_METHOD(target, "putPixel",                             putPixel);
     NODE_SET_METHOD(target, "putBlendedPixel",                      putBlendedPixel);
