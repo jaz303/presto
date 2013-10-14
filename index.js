@@ -1,6 +1,37 @@
 var bindings    = require("bindings")("presto_bindings.node"),
     k           = bindings.installConstants({});
 
+function x() {
+    for (var i = 0; i < arguments.length; ++i) {
+        exports[arguments[i]] = bindings[arguments[i]];
+    }
+}
+
+// Map JS event names to native Allegro event types
+var EVENT_HANDLERS = {
+    'joystickmove'          : k.EVENT_JOYSTICK_AXIS,
+    'joystickdown'          : k.EVENT_JOYSTICK_BUTTON_DOWN,
+    'joystickup'            : k.EVENT_JOYSTICK_BUTTON_UP,
+    'joystickconfig'        : k.EVENT_JOYSTICK_CONFIGURATION,
+    'keydown'               : k.EVENT_KEY_DOWN,
+    'keyup'                 : k.EVENT_KEY_UP,
+    'keychar'               : k.EVENT_KEY_CHAR,
+    'mousemove'             : k.EVENT_MOUSE_AXES,
+    'mousewarp'             : k.EVENT_MOUSE_WARPED,
+    'mousedown'             : k.EVENT_MOUSE_BUTTON_DOWN,
+    'mouseup'               : k.EVENT_MOUSE_BUTTON_UP,
+    'mouseenter'            : k.EVENT_MOUSE_ENTER_DISPLAY,
+    'mouseleave'            : k.EVENT_MOUSE_LEAVE_DISPLAY,
+    'displayexpose'         : k.EVENT_DISPLAY_EXPOSE,
+    'displayresize'         : k.EVENT_DISPLAY_RESIZE,
+    'displayclose'          : k.EVENT_DISPLAY_CLOSE,
+    'displaylost'           : k.EVENT_DISPLAY_LOST,
+    'displayfound'          : k.EVENT_DISPLAY_FOUND,
+    'displayswitchout'      : k.EVENT_DISPLAY_SWITCH_OUT,
+    'displayswitchin'       : k.EVENT_DISPLAY_SWITCH_IN,
+    'displayorientation'    : k.EVENT_DISPLAY_ORIENTATION
+};
+
 //
 // Init/loop
 
@@ -49,16 +80,21 @@ function uninstallSubSystems(systems) {
 function createContext() {
 
     var queue = bindings.createEventQueue();
+    queue.installMouseEventSource();
+    queue.installKeyboardEventSource();
+
     var tickFn = function(delta) {};
     var running = false;
 
-    queue.installMouseEventSource();
-    queue.installKeyboardEventSource();
+    var handlers = {};
+    for (var k in EVENT_HANDLERS) {
+        handlers[EVENT_HANDLERS[k]] = [];
+    }
 
     function tick(delta) {
         var evt = queue.getNextEvent();
         while (evt !== null) {
-            console.log(evt);
+            handlers[evt.type].forEach(function(cb) { cb(evt); });
             evt = queue.getNextEvent();
         }
         if (running) {
@@ -72,9 +108,15 @@ function createContext() {
         running = false;
     }
 
-    game.on = function(event, handler) {
-        if (event === 'tick') {
+    game.on = function(ev, handler) {
+        if (ev === 'tick') {
             tickFn = handler;
+        } else {
+            var nativeEventType = EVENT_HANDLERS[ev];
+            if (!nativeEventType) {
+                throw new Error("unknown event type: " + ev);
+            }
+            handlers[nativeEventType].push(handler);
         }
     }
 
@@ -121,9 +163,17 @@ function init() {
     
 }
 
-exports.constants           = k;
 exports.init                = init;
 exports.createContext       = createContext;
+
+for (var kname in k) {
+    var kval = k[kname];
+    Object.defineProperty(exports, kname, {
+        enumerable  : true,
+        writable    : false,
+        value       : k[kname]
+    });
+}
 
 //
 // Display
@@ -137,19 +187,19 @@ function createDisplay(width, height, opts) {
     var mode = opts.mode || 'window';
 
     if (mode === 'window') {
-        flags |= k.ALLEGRO_WINDOWED;
+        flags |= k.WINDOWED;
     } else if (mode === 'fullscreen') {
-        flags |= k.ALLEGRO_FULLSCREEN;
+        flags |= k.FULLSCREEN;
     } else if (mode === 'fullscreen-window') {
-        flags |= k.ALLEGRO_WINDOWED;
-        flags |= k.ALLEGRO_FULLSCREEN_WINDOW;
+        flags |= k.WINDOWED;
+        flags |= k.FULLSCREEN_WINDOW;
     } else {
         throw "invalid mode; valid modes are: 'window', 'fullscreen' or 'fullscreen-window'"
     }
 
-    if (opts.resizable) flags |= k.ALLEGRO_RESIZABLE;
-    if (opts.openGL)    flags |= k.ALLEGRO_OPENGL;
-    if (opts.noFrame)   flags |= k.ALLEGRO_NOFRAME;
+    if (opts.resizable) flags |= k.RESIZABLE;
+    if (opts.openGL)    flags |= k.OPENGL;
+    if (opts.noFrame)   flags |= k.NOFRAME;
 
     var args = [parseInt(width, 10), parseInt(height, 10), flags];
     if ('x' in opts && 'y' in opts) {
@@ -173,7 +223,7 @@ exports.inhibitScreensaver  = bindings.inhibitScreensaver;
 //
 // Events
 
-exports.createEventQueue    = bindings.createEventQueue;
+x('createEventQueue');
 
 //
 // Bitmaps
@@ -203,6 +253,22 @@ exports.createBitmap        = createBitmap;
 exports.loadBitmap          = bindings.loadBitmap;
 
 //
+// Target
+
+x(  'getTargetBitmap',
+    'setTargetBitmap',
+    'clearToColor',
+    'drawPixel',
+    'putPixel',
+    'putBlendedPixel',
+    'getClippingRectangle',
+    'setClippingRectangle',
+    'resetClippingRectangle',
+    'setBlender',
+    'isBitmapCompatibleWithCurrentDisplay',
+    'deferDrawing'  );
+
+//
 // Colors
 
 function rgb(r, g, b) {
@@ -221,7 +287,7 @@ function rgbaf(r, g, b, a) {
     return {r: r, g: g, b: b, a: a};
 }
 
-exports.rgb                 = rgb;
-exports.rgba                = rgba;
-exports.rgbf                = rgbf;
-exports.rgbaf               = rgbaf;
+exports.rgb     = rgb;
+exports.rgba    = rgba;
+exports.rgbf    = rgbf;
+exports.rgbaf   = rgbaf;

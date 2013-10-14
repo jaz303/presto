@@ -1,35 +1,65 @@
-var presto = require('./').init();
+var ps = require('../').init();
 
-var game = presto.createContext();
+var game = ps.createContext();
 
 var fs = require('fs');
 
-var display = presto.createDisplay(300, 600, {resizable: false, x: 0, y: 0, title: "My First Game"});
-// display.resize(400, 400);
-// display.setPosition(0, 0);
+var display = ps.createDisplay(800, 600, {resizable: false, title: "Hey Presto"});
 
 var frames = 0;
 
-var image = presto.loadBitmap('guardian.jpg');
-console.log(image.save("foo.tga"));
+var sprites = function() {
+    
+    var lb      = ps.loadBitmap,
+        base    = __dirname + '/gfxlib-fuzed/Sprites/';
 
-game.on('keydown', function() {
-    game.exit();
+    var toLoad = {
+        'hero.run_left'     : { src: 'gripe.run_left.png', mask: true },
+        'hero.run_right'    : { src: 'gripe.run_right.png', mask: true }
+    }
+
+    var out = {};
+    for (var k in toLoad) {
+        var spec    = toLoad[k],
+            sprite  = ps.loadBitmap(base + spec.src);
+        if (spec.mask) {
+            sprite.convertMaskToAlpha(ps.rgb(0xFF, 0x00, 0xFF));
+        }
+        out[k] = sprite;
+    }
+    
+    return out;
+
+}();
+
+game.on('keydown', function(ev) {
+    
 });
+
+game.on('mousemove', function(ev) {
+
+});
+
+game.on('mousedown', function(ev) {
+    console.log(ev);
+});
+
+var frame = 0;
 
 game.on('tick', function(delta) {
 
-    //console.log(display.x);
-    
+    display.use();
 
-    // fs.readFile('README.md', function(err, data) {
-    //     console.log("file contents: " + data);
-    //     game.exit();
-    // });
+    ps.clearToColor(ps.rgbf(0,0,0));
 
+    frame++;
+    var ix = (Math.floor(frame / 5)) % 8;
 
-    // display.use();
-    // display.clear('black');
+    sprites['hero.run_left'].drawRegion(ix * 32, 0, 32, 32, 10, 10);
+    sprites['hero.run_left'].drawRegion(ix * 32, 0, 32, 32, 50, 50);
+
+    display.flip();
+
 });
 
 // Sets internal tick function to run at specified FPS
