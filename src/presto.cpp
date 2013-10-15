@@ -82,6 +82,7 @@ void init(Handle<Object> target) {
     initColorKeys();
 
     PSTarget::init(target);
+    PSPrimitives::init(target);
     PSEventQueue::init(target);
     PSDisplay::init(target);
     PSBitmap::init(target);

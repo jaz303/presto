@@ -10,7 +10,8 @@
         "src/presto.cpp",
         "src/bitmap.cpp",
         "src/constants.cpp",
-        "src/target.cpp"
+        "src/target.cpp",
+        "src/primitives.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {

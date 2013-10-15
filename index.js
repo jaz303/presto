@@ -270,6 +270,24 @@ x(  'getTargetBitmap',
     'deferDrawing'  );
 
 //
+// Primitives
+
+x(  'drawLine',
+    'drawTriangle',
+    'drawFilledTriangle',
+    'drawRectangle',
+    'drawFilledRectangle',
+    'drawRoundedRectangle',
+    'drawFilledRoundedRectangle',
+    'drawEllipse',
+    'drawFilledEllipse',
+    'drawCircle',
+    'drawFilledCircle',
+    'drawArc',
+    'drawSpline',
+    'drawRibbon'    );
+
+//
 // Colors
 
 function rgb(r, g, b) {

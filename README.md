@@ -57,7 +57,7 @@ This is what it will look like:
   * <del>Colors</del>
   * <del>Bitmaps</del>
   * <del>Image I/O</del>
-  * Primitives
+  * <del>Primitives</del>
   * Fonts
   * Mouse
   * Joystick
@@ -76,6 +76,7 @@ I've skipped implementing some stuff that's not immediately useful to me. None o
   * `al_lock_bitmap()`, `al_lock_bitmap_region()`, `al_unlock_bitmap()`
   * `al_get_pixel_size()`, `al_get_pixel_format_bits()`
   * A few of the display flags are not recognised at the JS wrapper level: `ALLEGRO_OPENGL_3_0`, `ALLEGRO_OPENGL_FORWARD_COMPATIBLE`, `ALLEGRO_GENERATE_EXPOSE_EVENTS`
+  * A bunch of primitive drawing functions: `al_calculate_arc()`, `al_calculate_spline()` and `al_calculate_ribbon()`, plus all of the "low level drawing routines"
   * Enumeration and interrogation of available display modes
   * There are a lot of missing constants
   * Image I/O works with filenames only, not file descriptors
