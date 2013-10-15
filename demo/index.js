@@ -1,4 +1,6 @@
-var ps = require('../').init();
+var ps = require('../');
+
+ps.init();
 
 var game = ps.createContext();
 
