@@ -40,13 +40,13 @@ public:
     static Handle<Value> SetNoFrame(const Arguments& args);
 
     static Handle<Value> AcknowledgeResize(const Arguments &args);
-    static Handle<Value> Flip(const Arguments& args);
     static Handle<Value> Use(const Arguments& args);
     static Handle<Value> Resize(const Arguments& args);
     static Handle<Value> Destroy(const Arguments& args);
 
 private:
     ALLEGRO_DISPLAY *display_;
+    Persistent<Object> backBuffer_;
 
     PSDisplay(const PSDisplay&);
     void operator=(const PSDisplay&);

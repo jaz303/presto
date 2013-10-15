@@ -33,7 +33,7 @@ var sprites = function() {
 }();
 
 game.on('keydown', function(ev) {
-    
+    game.exit();
 });
 
 game.on('mousemove', function(ev) {
@@ -58,7 +58,7 @@ game.on('tick', function(delta) {
     sprites['hero.run_left'].drawRegion(ix * 32, 0, 32, 32, 10, 10);
     sprites['hero.run_left'].drawRegion(ix * 32, 0, 32, 32, 50, 50);
 
-    display.flip();
+    ps.flip();
 
 });
 

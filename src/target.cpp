@@ -33,6 +33,11 @@ static Handle<Value> setTargetBitmap(const Arguments& args) {
 
 }
 
+static Handle<Value> flip(const Arguments& args) {
+    al_flip_display();
+    return UNDEFINED();
+}
+
 static Handle<Value> clear(const Arguments& args) {
     al_clear_to_color(mapColor(args[0]));
     return UNDEFINED();
@@ -246,6 +251,7 @@ void PSTarget::init(Handle<Object> target)
 
     NODE_SET_METHOD(target, "getTargetBitmap",                      getTargetBitmap);
     NODE_SET_METHOD(target, "setTargetBitmap",                      setTargetBitmap);
+    NODE_SET_METHOD(target, "flip",                                 flip);
     NODE_SET_METHOD(target, "clear",                                clear);
     NODE_SET_METHOD(target, "drawPixel",                            drawPixel);
     NODE_SET_METHOD(target, "putPixel",                             putPixel);

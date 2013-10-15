@@ -1,5 +1,8 @@
 #include "display.h"
 #include "helpers.h"
+#include "bitmap.h"
+#include "target.h"
+
 #include <v8.h>
 #include <allegro5/allegro.h>
 
@@ -89,6 +92,8 @@ Persistent<FunctionTemplate> PSDisplay::tpl;
 PSDisplay::PSDisplay(ALLEGRO_DISPLAY *display)
     : display_(display)
 {
+    ALLEGRO_BITMAP *bb = al_get_backbuffer(display_);
+    backBuffer_ = Persistent<Object>::New(PSBitmap::createInstance(bb));
 }
 
 PSDisplay::~PSDisplay()
@@ -143,7 +148,6 @@ void PSDisplay::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "setNoFrame", SetNoFrame);
 
     NODE_SET_PROTOTYPE_METHOD(ft, "acknowledgeResize", AcknowledgeResize);
-    NODE_SET_PROTOTYPE_METHOD(ft, "flip", Flip);
     NODE_SET_PROTOTYPE_METHOD(ft, "use", Use);
     NODE_SET_PROTOTYPE_METHOD(ft, "resize", Resize);
     NODE_SET_PROTOTYPE_METHOD(ft, "destroy", Destroy);
@@ -167,8 +171,8 @@ Handle<Object> PSDisplay::createInstance(ALLEGRO_DISPLAY *display)
 Handle<Value> PSDisplay::GetBackBuffer(Local<String> prop, const AccessorInfo &info)
 {
     HandleScope _;
-    // TODO: we don't have graphics yet
-    return _.Close(Undefined());
+    UNWRAP_SELF_PROP;
+    return _.Close(self->backBuffer_);
 }
 
 Handle<Value> PSDisplay::GetWidth(Local<String> prop, const AccessorInfo &info)
@@ -292,24 +296,11 @@ Handle<Value> PSDisplay::AcknowledgeResize(const Arguments &args)
     return _.Close(al_acknowledge_resize(self->display_) ? True() : False());
 }
 
-Handle<Value> PSDisplay::Flip(const Arguments& args)
-{
-    HandleScope _;
-
-    UNWRAP_SELF;
-    al_set_target_backbuffer(self->display_);
-    al_flip_display();
-
-    return _.Close(Undefined());
-}
-
 Handle<Value> PSDisplay::Use(const Arguments& args)
 {
     HandleScope _;
-
     UNWRAP_SELF;
-    al_set_target_backbuffer(self->display_);
-    
+    PSTarget::setTargetPSBitmap(self->backBuffer_);
     return _.Close(Undefined());
 }
 
@@ -340,8 +331,12 @@ Handle<Value> PSDisplay::Destroy(const Arguments& args)
 void PSDisplay::destroy()
 {
     if (display_ != NULL) {
+
+        backBuffer_.Dispose();
+
         unmapDisplay(display_);
         al_destroy_display(display_);
         display_ = NULL;
+    
     }
 }

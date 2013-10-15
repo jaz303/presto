@@ -257,6 +257,7 @@ exports.loadBitmap          = bindings.loadBitmap;
 
 x(  'getTargetBitmap',
     'setTargetBitmap',
+    'flip',
     'clear',
     'drawPixel',
     'putPixel',
