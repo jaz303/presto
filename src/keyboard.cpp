@@ -43,6 +43,8 @@ void PSKeyboard::init(Handle<Object> target) {
 
 }
 
+Persistent<FunctionTemplate> PSKeyboardState::tpl;
+
 Handle<Object> PSKeyboardState::createInstance() {
     
     HandleScope _;

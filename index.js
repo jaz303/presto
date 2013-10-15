@@ -288,6 +288,26 @@ x(  'drawLine',
     'drawRibbon'    );
 
 //
+// Keyboard
+
+x(  'getKeyboardState',
+    'keycodeToName',
+    'setKeyboardLeds'   );
+
+//
+// Mouse
+
+x(  'getMouseNumAxes',
+    'getMouseNumButtons',
+    'getMouseState',
+    'setMouseXZ',
+    'setMouseZ',
+    'setMouseW',
+    'setMouseAxis',
+    'createMouseCursor',
+    'getMouseCursorPosition'    );
+
+//
 // Colors
 
 function rgb(r, g, b) {

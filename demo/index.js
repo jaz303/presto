@@ -46,6 +46,9 @@ game.on('mousedown', function(ev) {
 
 var frame = 0;
 
+// var cursor = ps.createMouseCursor(sprites['hero.run_left']);
+// display.setMouseCursor(cursor);
+
 game.on('tick', function(delta) {
 
     display.use();

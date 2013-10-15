@@ -148,6 +148,10 @@ void PSDisplay::init(Handle<Object> target)
     NODE_SET_PROTOTYPE_METHOD(ft, "setFullscreen", SetFullscreen);
     NODE_SET_PROTOTYPE_METHOD(ft, "setNoFrame", SetNoFrame);
 
+    NODE_SET_PROTOTYPE_METHOD(ft, "setMouseCursor", SetMouseCursor);
+    NODE_SET_PROTOTYPE_METHOD(ft, "hideMouseCursor", HideMouseCursor);
+    NODE_SET_PROTOTYPE_METHOD(ft, "showMouseCursor", ShowMouseCursor);
+
     NODE_SET_PROTOTYPE_METHOD(ft, "acknowledgeResize", AcknowledgeResize);
     NODE_SET_PROTOTYPE_METHOD(ft, "use", Use);
     NODE_SET_PROTOTYPE_METHOD(ft, "resize", Resize);

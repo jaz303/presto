@@ -142,6 +142,8 @@ static Handle<Value> getMouseCursorPosition(const Arguments& args) {
 
 }
 
+Persistent<FunctionTemplate> PSMouseCursor::tpl;
+
 void PSMouseCursor::init(Handle<Object> target) {
     
     HandleScope _;
