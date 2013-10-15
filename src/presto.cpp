@@ -84,6 +84,9 @@ void init(Handle<Object> target) {
     PSTarget::init(target);
     PSPrimitives::init(target);
     PSEventQueue::init(target);
+    PSKeyboard::init(target);
+    PSMouse::init(target);
+    PSMouseCursor::init(target);
     PSDisplay::init(target);
     PSBitmap::init(target);
 

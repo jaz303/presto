@@ -2,6 +2,7 @@
 #include "helpers.h"
 #include "bitmap.h"
 #include "target.h"
+#include "api.h"
 
 #include <v8.h>
 #include <allegro5/allegro.h>
@@ -287,6 +288,33 @@ Handle<Value> PSDisplay::SetNoFrame(const Arguments& args)
     bool result = al_toggle_display_flag(self->display_, ALLEGRO_NOFRAME, noFrame);
 
     return _.Close(result ? True() : False());
+}
+
+Handle<Value> PSDisplay::SetMouseCursor(const Arguments& args)
+{
+    UNWRAP_SELF;
+    if (args[0]->IsNumber()) {
+        return BOOL(al_set_system_mouse_cursor(self->display_, (ALLEGRO_SYSTEM_MOUSE_CURSOR) args[0]->IntegerValue()));
+    } else if (args[0]->IsObject()) {
+        Handle<Object> cursorObj = Handle<Object>::Cast(args[0]);
+        PSMouseCursor *cursor = node::ObjectWrap::Unwrap<PSMouseCursor>(cursorObj);
+        if (cursor) {
+            return BOOL(al_set_mouse_cursor(self->display_, cursor->allegroMouseCursor()));
+        }
+    }
+    THROW("PSDisplay::setMouseCursor(): argument must be either integer or cursor object");
+}
+
+Handle<Value> PSDisplay::HideMouseCursor(const Arguments& args)
+{
+    UNWRAP_SELF;
+    return BOOL(al_hide_mouse_cursor(self->display_));
+}
+
+Handle<Value> PSDisplay::ShowMouseCursor(const Arguments& args)
+{
+    UNWRAP_SELF;
+    return BOOL(al_show_mouse_cursor(self->display_));
 }
 
 Handle<Value> PSDisplay::AcknowledgeResize(const Arguments &args)

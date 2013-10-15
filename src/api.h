@@ -11,6 +11,8 @@ using namespace v8;
 #include "event_queue.h"
 #include "target.h"
 #include "primitives.h"
+#include "keyboard.h"
+#include "mouse.h"
 
 ALLEGRO_COLOR mapColor(Handle<Value> color);
 Handle<Value> unmapColor(ALLEGRO_COLOR color, bool returnObject);

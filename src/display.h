@@ -39,6 +39,10 @@ public:
     static Handle<Value> SetFullscreen(const Arguments& args);
     static Handle<Value> SetNoFrame(const Arguments& args);
 
+    static Handle<Value> SetMouseCursor(const Arguments& args);
+    static Handle<Value> HideMouseCursor(const Arguments& args);
+    static Handle<Value> ShowMouseCursor(const Arguments& args);
+
     static Handle<Value> AcknowledgeResize(const Arguments &args);
     static Handle<Value> Use(const Arguments& args);
     static Handle<Value> Resize(const Arguments& args);

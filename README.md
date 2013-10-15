@@ -59,9 +59,10 @@ This is what it will look like:
   * <del>Image I/O</del>
   * <del>Primitives</del>
   * Fonts
-  * Mouse
+  * <del>Mouse</del>
+  * <del>Mouse Cursors</del>
   * Joystick
-  * Keyboard
+  * <del>Keyboard</del>
   * OpenGL
   * Audio
   * Native dialogs
@@ -75,6 +76,7 @@ I've skipped implementing some stuff that's not immediately useful to me. None o
   * `al_get_current_display()`
   * `al_lock_bitmap()`, `al_lock_bitmap_region()`, `al_unlock_bitmap()`
   * `al_get_pixel_size()`, `al_get_pixel_format_bits()`
+  * `al_grab_mouse()`, `al_ungrab_mouse()`
   * A few of the display flags are not recognised at the JS wrapper level: `ALLEGRO_OPENGL_3_0`, `ALLEGRO_OPENGL_FORWARD_COMPATIBLE`, `ALLEGRO_GENERATE_EXPOSE_EVENTS`
   * A bunch of primitive drawing functions: `al_calculate_arc()`, `al_calculate_spline()` and `al_calculate_ribbon()`, plus all of the "low level drawing routines"
   * Enumeration and interrogation of available display modes

@@ -11,7 +11,9 @@
         "src/bitmap.cpp",
         "src/constants.cpp",
         "src/target.cpp",
-        "src/primitives.cpp"
+        "src/primitives.cpp",
+        "src/keyboard.cpp",
+        "src/mouse.cpp"
       ],
       "conditions": [
         [ 'OS=="mac"', {
