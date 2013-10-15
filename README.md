@@ -63,6 +63,7 @@ This is what it will look like:
   * <del>Mouse Cursors</del>
   * Joystick
   * <del>Keyboard</del>
+  * Transformations
   * OpenGL
   * Audio
   * Native dialogs
