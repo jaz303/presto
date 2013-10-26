@@ -8,7 +8,7 @@
     static Persistent<String> key_##name
 
 #define PS_INIT_KEY(name, value) \
-    key_##name = Persistent<String>::New(String::New(value))
+    key_##name = Persistent<String>::New(String::NewSymbol(value))
 
 #define F_ARG(ix, name) \
     (args[ix]->NumberValue())
